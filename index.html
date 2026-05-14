@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evidencias de Cultura Digital 2°</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue-soft: #b8d4f0;
+      --blue-mid: #7fb3e8;
+      --blue-deep: #4a90c4;
+      --blue-pale: #deedf9;
+      --red-soft: #f5b8b8;
+      --red-mid: #e88080;
+      --red-deep: #c44a4a;
+      --red-pale: #fde8e8;
+      --cream: #f8f6f2;
+      --dark: #1a1a2e;
+      --gray: #6b7280;
+      --gray-light: #e8edf4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO / PORTADA ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, var(--blue-pale) 0%, var(--cream) 50%, var(--red-pale) 100%);
+    }
+
+    /* Grid pattern background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--blue-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--blue-soft) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.35;
+    }
+
+    /* Floating decorative circles */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.45;
+      animation: float 8s ease-in-out infinite;
+    }
+    .blob-1 { width: 380px; height: 380px; background: var(--blue-mid); top: -80px; left: -100px; animation-delay: 0s; }
+    .blob-2 { width: 280px; height: 280px; background: var(--red-soft); bottom: -60px; right: -80px; animation-delay: 3s; }
+    .blob-3 { width: 200px; height: 200px; background: var(--blue-soft); bottom: 120px; left: 60px; animation-delay: 5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* Decorative circuit dots */
+    .dots-grid {
+      position: absolute;
+      top: 40px; right: 60px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      opacity: 0.3;
+    }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--blue-deep); }
+    .dot:nth-child(even) { background: var(--red-deep); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      animation: fadeUp 1s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1.5px solid var(--blue-mid);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 0.72rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--blue-deep);
+      letter-spacing: 0.08em;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--red-mid);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero-title {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+      margin-bottom: 0.6rem;
+      animation: fadeUp 1s ease 0.3s both;
+    }
+
+    .hero-title .accent-blue { color: var(--blue-deep); }
+    .hero-title .accent-red  { color: var(--red-deep); }
+
+    .hero-subtitle {
+      font-size: 0.78rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.12em;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s ease 0.45s both;
+    }
+
+    /* horizontal rule decoration */
+    .hero-rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s ease 0.55s both;
+    }
+    .rule-line { flex: 1; max-width: 80px; height: 1.5px; background: linear-gradient(90deg, transparent, var(--blue-mid)); }
+    .rule-line.r { background: linear-gradient(90deg, var(--red-mid), transparent); }
+    .rule-icon {
+      width: 32px; height: 32px;
+      border: 1.5px solid var(--blue-mid);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      background: white;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray);
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: fadeUp 1s ease 0.8s both;
+    }
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 2px solid var(--blue-mid);
+      border-bottom: 2px solid var(--blue-mid);
+      transform: rotate(45deg);
+      animation: bounce 1.8s ease infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ── TASKS SECTION ── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 3.5rem;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue-deep);
+      background: var(--blue-pale);
+      padding: 6px 14px;
+      border-radius: 4px;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--gray-light); }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1.5px solid var(--gray-light);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      animation: fadeUp 0.6s ease both;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(74, 144, 196, 0.15);
+      border-color: var(--blue-mid);
+    }
+    .card:nth-child(3n+2):hover { border-color: var(--red-mid); box-shadow: 0 20px 50px rgba(196, 74, 74, 0.12); }
+
+    /* stagger animation */
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
+
+    .card-image {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(135deg, var(--blue-pale), var(--red-pale));
+      position: relative;
+    }
+
+    /* Placeholder image inside card */
+    .card-img-placeholder {
+      width: 100%;
+      height: 190px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 2.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-img-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .card-img-placeholder span { position: relative; z-index: 1; }
+    .card-img-label {
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      color: var(--dark);
+      opacity: 0.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-num {
+      position: absolute;
+      top: 12px; left: 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      background: white;
+      color: var(--blue-deep);
+      border-radius: 6px;
+      padding: 3px 8px;
+      letter-spacing: 0.08em;
+      z-index: 2;
+    }
+
+    .card-body {
+      padding: 1.4rem 1.5rem 1.6rem;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 0.8rem;
+    }
+    .tag-blue { background: var(--blue-pale); color: var(--blue-deep); }
+    .tag-red  { background: var(--red-pale);  color: var(--red-deep); }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.55rem;
+      color: var(--dark);
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.65;
+      margin-bottom: 1.3rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-date {
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+    }
+
+    .btn-ver {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--dark);
+      color: white;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-ver:hover {
+      background: var(--blue-deep);
+      transform: scale(1.04);
+    }
+    .card:nth-child(3n+2) .btn-ver:hover { background: var(--red-deep); }
+    .btn-ver svg { transition: transform 0.2s; }
+    .btn-ver:hover svg { transform: translateX(3px); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--gray-light);
+      font-size: 0.72rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--gray);
+      letter-spacing: 0.08em;
+      background: white;
+    }
+    footer span { color: var(--blue-deep); }
+  </style>
+</head>
+<body>
+
+  <!-- ── PORTADA ── -->
+  <section class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="dots-grid">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">✦ Portafolio Escolar 2026</div>
+
+      <h1 class="hero-title">
+        Portafolio de<br/>
+        <span class="accent-blue">Cultura</span>
+        <span class="accent-red"> Digital</span> 2°
+      </h1>
+
+      <p class="hero-subtitle">2do Semestre · Inteligencia Artificial</p>
+      <p class="hero-subtitle">By Miguel Angel</p>
+      <p class="hero-subtitle"><a target="_blank"href="http://www.Google.com/">Google</a></p>
+      <p class="hero-subtitle"><a href="https://www.instagram.com/mike_virz" class="red-item">Instagram</a></p>
+      <p class="hero-subtitle"><a href="https://www.facebook.com/share/1KWi98kUYy/" class="red-item">facebook</a></p>
+      <div class="hero-rule">
+        <div class="rule-line"></div>
+        <div class="rule-icon">⌘</div>
+        <div class="rule-line r"></div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      ver tareas
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ── TAREAS ── -->
+  <main class="section">
+    <div class="section-header">
+      <span class="section-label">// Tareas</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- Card 1 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#deedf9,#b8d4f0);">
+            <span><img src="imagenes/timberners.jpg"width="100%"height=""></span>
+            <span class="card-img-label">Tim Berners Lee</span>
+          </div>
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-blue">Introducción</span>
+          <h2 class="card-title">El padre del internet </h2>
+          <p class="card-desc">Tim Berners Lee es considerado el padre del internet, creando la www.</p>
+          <div class="card-footer">
+            <span class="card-date">2026</span>
+            <a href="tarea1.html" class="btn-ver">
+              Ver tareas
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#fde8e8,#f5b8b8);">
+            <span><img src="imagenes/lenguajes.jpg"width="100%"></span>
+            <span class="card-img-label">IMAGEN DE TAREA</span>
+          </div>
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-red">IA</span>
+          <h2 class="card-title">Lenguajes de diseño y programacion</h2>
+          <p class="card-desc">Existen difeentes lenguajes, cada uno con un enfoque especifico, existen lenguajes de diseño y maquetacion y lenguajes de programacion.</p>
+          <div class="card-footer">
+            <span class="card-date"> 2026</span>
+            <a href="tarea2.html" class="btn-ver">
+              Ver tarea
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#deedf9,#e8d5f9);">
+            <span><img src="imagenes/html5.jpg" width="100%" height="0100%"></span>
+            <span class="card-img-label">IMAGEN DE TAREA</span>
+          </div>
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-blue">Digital</span>
+          <h2 class="card-title">Guia de html5 desde cero</h2>
+          <p class="card-desc">Escribe aquí una breve descripción de la tarea, el objetivo o los aprendizajes que obtuviste al realizarla.</p>
+          <div class="card-footer">
+            <span class="card-date"> 2026</span>
+            <a href="tarea3.html" class="btn-ver">
+              Ver tarea
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#fde8e8,#f9efd5);">
+            <span><img src="imagenes/css3.jpg" width="100%" height="0100%"></span>
+            <span class="card-img-label">CSS3</span>
+          </div>
+          
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-red">Datos</span>
+          <h2 class="card-title">Guia de css3 desde cero</h2>
+          <p class="card-desc">Escribe aquí una breve descripción de la tarea, el objetivo o los aprendizajes que obtuviste al realizarla.</p>
+          <div class="card-footer">
+            <span class="card-date"> 2026</span>
+            <a href="tarea4.html" class="btn-ver">
+              Ver tarea
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#b8d4f0,#deedf9);">
+            <span><img src="imagenes/Creando figuras con html y css.jpg" height="0100"></span>
+            
+          </div>
+          <span class="card-num"></span>
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-blue">Innovación</span>
+          <h2 class="card-title">Figuras Geométricas con HTML</h2>
+          <p class="card-desc">Práctica de creación de figuras geométricas (triángulos, cuadrados, circulos y más)usando HTML y CSS, explorando las posibilidades gráficas del navegador.</p>
+          <div class="card-footer">
+            <span class="card-date">08/05/2026</span>
+            <a href="practicaHTML.html" class="btn-ver">
+              Ver tarea
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#f5b8b8,#fde8e8);">
+            <span><img src="imagenes/python.jpg" width="100%"></span>
+            
+          </div>
+          <span class="card-num"></span>
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-red">Redes</span>
+          <h2 class="card-title">Conseptos de de python</h2>
+          <p class="card-desc">Escribe aquí una breve descripción de la tarea, el objetivo o los aprendizajes que obtuviste al realizarla.</p>
+          <div class="card-footer">
+            <span class="card-date">08/05/2026</span>
+            <a href="tarea6.html" class="btn-ver">
+              Ver tarea
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+      
+       <!-- Card 7 -->
+      <article class="card">
+        <div style="position:relative">
+          <div class="card-img-placeholder" style="background:linear-gradient(135deg,#f5b8b8,#fde8e8);">
+            <span><img src="imagenes/arduino.jpg" width="0200"></span>
+            
+          </div>
+          <span class="card-num"></span>
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-red">Redes</span>
+          <h2 class="card-title">Componentes de arduino</h2>
+          <p class="card-desc">Sensores y demas hardware compatible con arduino.</p>
+          <div class="card-footer">
+            <span class="card-date">08/05/2026</span>
+            <a href="tarea7.html" class="btn-ver">
+              Ver tarea
+              <svg width="12" height="12" fill="none" viewBox="0 0 12 12">
+                <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /cards-grid -->
+  </main>
+
+  <footer>
+    <span>Portafolio de Cultura Digital 2°</span> &nbsp;·&nbsp; 2do Semestre de IA &nbsp;·&nbsp; 2026 &nbsp; Centro de Bachillerato Tecnologico Industrial y de Servicios No. 144 &nbsp; Alumno:Miguel Angel Villalobos Rodriguez 
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Práctica HTML y CSS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+
+    /* ══════════════════════════════════════
+       VARIABLES Y RESET
+    ══════════════════════════════════════ */
+    :root {
+      --azul:        #4a90c4;
+      --azul-claro:  #7fb3e8;
+      --azul-palido: #deedf9;
+      --rojo:        #c44a4a;
+      --rojo-claro:  #e88080;
+      --rojo-palido: #fde8e8;
+      --crema:       #f8f6f2;
+      --oscuro:      #1a1a2e;
+      --gris:        #6b7280;
+      --gris-claro:  #e8edf4;
+      --verde:       #22c55e;
+      --verde-palido:#dcfce7;
+      --amber:       #f59e0b;
+      --amber-palido:#fef3c7;
+      --blanco:      #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--crema);
+      color: var(--oscuro);
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       NAVBAR FIJA
+    ══════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(14px);
+      background: rgba(248,246,242,.88);
+      border-bottom: 1px solid rgba(184,212,240,.35);
+    }
+
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--oscuro);
+      letter-spacing: -.01em;
+    }
+    .nav-logo span { color: var(--azul); }
+    .nav-logo em   { color: var(--rojo); font-style: normal; }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .08em;
+      text-decoration: none;
+      color: var(--gris);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1.5px solid transparent;
+      transition: all .22s;
+    }
+    .nav-links a:hover {
+      border-color: var(--azul-claro);
+      color: var(--azul);
+      background: var(--azul-palido);
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      color: var(--oscuro);
+      text-decoration: none;
+      background: white;
+      border: 1.5px solid var(--gris-claro);
+      border-radius: 999px;
+      padding: 8px 18px;
+      transition: border-color .25s, color .25s, transform .2s;
+    }
+    .btn-back:hover {
+      border-color: var(--azul-claro);
+      color: var(--azul);
+      transform: translateX(-3px);
+    }
+    .btn-back svg { transition: transform .2s; }
+    .btn-back:hover svg { transform: translateX(-3px); }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--oscuro);
+      padding: 100px 2rem 4rem;
+    }
+
+    /* código flotante de fondo */
+    .hero-bg-code {
+      position: absolute;
+      inset: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: .65rem;
+      line-height: 2;
+      color: rgba(127,179,232,.07);
+      padding: 80px 40px;
+      white-space: pre;
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* cuadrícula de puntos */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(127,179,232,.12) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+
+    /* blob azul */
+    .blob-a {
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,144,196,.3), transparent 70%);
+      top: -80px; left: -100px;
+      animation: blobPulse 8s ease-in-out infinite;
+    }
+    /* blob rojo */
+    .blob-b {
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,74,74,.25), transparent 70%);
+      bottom: -60px; right: -60px;
+      animation: blobPulse 6s ease-in-out infinite reverse;
+    }
+    @keyframes blobPulse {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.12); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 740px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(127,179,232,.3);
+      border-radius: 999px;
+      padding: 7px 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .1em;
+      color: var(--azul-claro);
+      margin-bottom: 1.8rem;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--rojo-claro);
+      animation: dot-pulse 2s ease infinite;
+    }
+    @keyframes dot-pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.4; transform:scale(1.5); }
+    }
+
+    .hero-title {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: white;
+      letter-spacing: -.03em;
+      margin-bottom: .8rem;
+      animation: fadeUp .8s ease .1s both;
+    }
+    .hero-title .t-blue { color: var(--azul-claro); }
+    .hero-title .t-red  { color: var(--rojo-claro); }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,.45);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 2.2rem;
+      animation: fadeUp .8s ease .22s both;
+    }
+
+    /* pills de contenido */
+    .hero-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp .8s ease .35s both;
+    }
+    .pill {
+      font-family: 'Space Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid;
+    }
+    .pill-blue   { border-color: var(--azul-claro); color: var(--azul-claro); background: rgba(127,179,232,.08); }
+    .pill-red    { border-color: var(--rojo-claro);  color: var(--rojo-claro);  background: rgba(232,128,128,.08); }
+    .pill-green  { border-color: #4ade80; color: #4ade80; background: rgba(74,222,128,.08); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.25);
+      font-family: 'Space Mono', monospace; font-size: .58rem;
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+    .scroll-arrow {
+      width: 16px; height: 16px;
+      border-right: 2px solid var(--azul-claro);
+      border-bottom: 2px solid var(--azul-claro);
+      transform: rotate(45deg);
+      animation: bounce 1.8s ease infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: rotate(45deg) translateY(0); }
+      50%      { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ══════════════════════════════════════
+       CONTENIDO PRINCIPAL
+    ══════════════════════════════════════ */
+    .contenido {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 5rem 2rem 7rem;
+    }
+
+    /* etiqueta de sección */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 2rem;
+    }
+    .sec-label span {
+      font-family: 'Space Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .sl-blue   { color: var(--azul);  background: var(--azul-palido); }
+    .sl-red    { color: var(--rojo);  background: var(--rojo-palido); }
+    .sl-green  { color: #15803d; background: var(--verde-palido); }
+    .sl-amber  { color: #92400e; background: var(--amber-palido); }
+    .sec-line  { flex: 1; height: 1px; background: var(--gris-claro); }
+
+    /* sección */
+    .seccion { margin-bottom: 4.5rem; }
+
+    /* tarjeta blanca */
+    .card {
+      background: white;
+      border: 1.5px solid var(--gris-claro);
+      border-radius: 20px;
+      padding: 2rem 2.2rem;
+      margin-bottom: 1.6rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .card:hover {
+      border-color: var(--azul-claro);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(74,144,196,.12);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(to bottom, var(--azul-claro), var(--azul));
+      border-radius: 4px 0 0 4px;
+    }
+    .card.card-red::before { background: linear-gradient(to bottom, var(--rojo-claro), var(--rojo)); }
+    .card.card-red:hover   { border-color: var(--rojo-claro); box-shadow: 0 16px 40px rgba(196,74,74,.12); }
+    .card.card-green::before { background: linear-gradient(to bottom,#4ade80,#15803d); }
+    .card.card-green:hover { border-color: #86efac; box-shadow: 0 16px 40px rgba(34,197,94,.1); }
+
+    .card-icon  { font-size: 1.8rem; margin-bottom: .6rem; }
+    .card-title {
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gris);
+      margin-bottom: .4rem;
+    }
+    .card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .6rem; }
+    .card p  { font-size: .9rem; line-height: 1.75; color: #374151; }
+    .card p strong { color: var(--oscuro); }
+
+    /* 2 columnas */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.6rem; }
+
+    /* prosa */
+    .prose {
+      font-size: .95rem;
+      line-height: 1.85;
+      color: #374151;
+      margin-bottom: 1.4rem;
+    }
+    .prose strong { color: var(--oscuro); font-weight: 600; }
+
+    /* ══════════════════════════════════════
+       BLOQUE DE CÓDIGO
+    ══════════════════════════════════════ */
+    .code-block {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid var(--gris-claro);
+      margin-bottom: 1.4rem;
+    }
+    .code-top {
+      background: var(--oscuro);
+      padding: 8px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dots { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+    .code-file {
+      font-family: 'Space Mono', monospace;
+      font-size: .58rem; letter-spacing: .1em;
+      color: rgba(255,255,255,.3); text-transform: uppercase;
+    }
+    .code-body {
+      background: #0d1117;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+    }
+    .code-body pre {
+      margin: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      line-height: 1.85;
+      color: #c9d1d9;
+      white-space: pre;
+    }
+    /* colores de sintaxis */
+    .kw  { color: #ff7b72; }
+    .fn  { color: #d2a8ff; }
+    .st  { color: #a5d6ff; }
+    .cm  { color: #8b949e; }
+    .nm  { color: #79c0ff; }
+    .tx  { color: #c9d1d9; }
+    .pr  { color: #ffa657; }
+    .va  { color: #a5d6ff; }
+    .tg  { color: #7ee787; }
+    .at  { color: #ffa657; }
+    .sel { color: #7ee787; }
+    .hex { color: #79c0ff; }
+
+    /* ══════════════════════════════════════
+       RESULTADO EN VIVO
+    ══════════════════════════════════════ */
+    .preview-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gris);
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: .5rem;
+    }
+    .preview-label::before { content: '▶ '; color: var(--verde); }
+
+    .preview-box {
+      background: white;
+      border: 1.5px solid var(--gris-claro);
+      border-radius: 14px;
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 1.8rem;
+      font-size: .9rem;
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════
+       CAJAS DE CONSEJO / ADVERTENCIA / OK
+    ══════════════════════════════════════ */
+    .tip, .warn, .ok, .nota {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border-radius: 14px;
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 1.4rem;
+    }
+    .tip  { background: var(--azul-palido);  border: 1.5px solid var(--azul-claro); }
+    .warn { background: var(--amber-palido); border: 1.5px solid #fcd34d; }
+    .ok   { background: var(--verde-palido); border: 1.5px solid #86efac; }
+    .nota { background: var(--rojo-palido);  border: 1.5px solid var(--rojo-claro); }
+    .box-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: .1rem; }
+    .box-body { font-size: .85rem; line-height: 1.7; }
+    .tip  .box-body { color: #1e3a5f; }
+    .tip  .box-body strong { color: var(--azul); }
+    .warn .box-body { color: #78350f; }
+    .warn .box-body strong { color: #92400e; }
+    .ok   .box-body { color: #14532d; }
+    .ok   .box-body strong { color: #15803d; }
+    .nota .box-body { color: #7f1d1d; }
+    .nota .box-body strong { color: var(--rojo); }
+
+    /* ══════════════════════════════════════
+       DIAGRAMA OSCURO
+    ══════════════════════════════════════ */
+    .diagram {
+      background: var(--oscuro);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .diagram::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(127,179,232,.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .diagram-inner {
+      position: relative; z-index: 1;
+      font-family: 'Space Mono', monospace;
+      font-size: .75rem; line-height: 2.1;
+      color: rgba(255,255,255,.8);
+    }
+    .di  { padding-left: 1.8rem; }
+    .di2 { padding-left: 3.6rem; }
+    .di3 { padding-left: 5.4rem; }
+    .dt  { color: #7ee787; }
+    .da  { color: #ffa657; }
+    .dv  { color: #a5d6ff; }
+    .dc  { color: #8b949e; }
+
+    /* ══════════════════════════════════════
+       DEMO DE ESTILOS CSS EN VIVO
+    ══════════════════════════════════════ */
+    .demo-colores {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 1.4rem;
+    }
+    .demo-color-box {
+      width: 70px; height: 70px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: .55rem;
+      color: white; text-align: center; font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+
+    /* demo tipografía */
+    .demo-tipo {
+      background: white;
+      border: 1.5px solid var(--gris-claro);
+      border-radius: 14px;
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 1.4rem;
+    }
+
+    /* demo box model visual */
+    .box-model-visual {
+      background: var(--oscuro);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bm-margin  { background: rgba(239,68,68,.18); border: 2px dashed rgba(239,68,68,.5); border-radius: 10px; padding: 18px; position: relative; }
+    .bm-border  { background: rgba(245,158,11,.18); border: 2px solid rgba(245,158,11,.6); border-radius: 8px;  padding: 16px; position: relative; }
+    .bm-padding { background: rgba(34,197,94,.18);  border: 2px dashed rgba(34,197,94,.5);  border-radius: 6px;  padding: 14px; position: relative; }
+    .bm-content { background: rgba(127,179,232,.3); border: 2px solid var(--azul-claro); border-radius: 4px; padding: 14px 24px; font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--azul-claro); text-align: center; white-space: nowrap; }
+    .bm-lbl { position: absolute; top: 3px; left: 8px; font-family: 'Space Mono', monospace; font-size: .55rem; font-weight: 700; }
+    .bm-margin  .bm-lbl { color: #fca5a5; }
+    .bm-border  .bm-lbl { color: #fcd34d; }
+    .bm-padding .bm-lbl { color: #86efac; }
+
+    /* demo flexbox */
+    .flex-vis {
+      background: white;
+      border: 1.5px solid var(--gris-claro);
+      border-radius: 14px;
+      padding: 1.2rem;
+      margin-bottom: .8rem;
+    }
+    .fv-label { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--gris); margin-bottom: 8px; }
+    .fv-row   { display: flex; gap: 8px; }
+    .fv-item  { flex: 1; background: var(--azul-palido); border: 1.5px solid var(--azul-claro); border-radius: 8px; padding: 10px; font-family: 'Space Mono', monospace; font-size: .65rem; color: var(--azul); text-align: center; }
+    .fv-item-red { background: var(--rojo-palido); border-color: var(--rojo-claro); color: var(--rojo); }
+
+    /* lista de pasos */
+    .steps { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.8rem; }
+    .step  {
+      display: grid; grid-template-columns: 44px 1fr; gap: 14px;
+      background: white; border: 1.5px solid var(--gris-claro);
+      border-radius: 14px; padding: 1rem 1.2rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .step:hover { border-color: var(--azul-claro); transform: translateX(4px); }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--oscuro); color: white;
+      font-family: 'Space Mono', monospace; font-size: .78rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-body { font-size: .88rem; line-height: 1.65; color: #374151; }
+    .step-body strong { color: var(--oscuro); display: block; margin-bottom: .3rem; }
+
+    /* checklist */
+    .checklist { display: flex; flex-direction: column; gap: .6rem; margin-bottom: 1.8rem; }
+    .chk {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: white; border: 1.5px solid var(--gris-claro);
+      border-radius: 10px; padding: .7rem 1rem;
+      font-size: .86rem; line-height: 1.55;
+      transition: border-color .25s;
+    }
+    .chk:hover { border-color: var(--azul-claro); }
+    .chk-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+
+    /* tabla de referencia */
+    .ref-table { width: 100%; border-collapse: collapse; margin-bottom: 1.8rem; font-size: .83rem; }
+    .ref-table th {
+      background: var(--oscuro); color: white;
+      font-family: 'Space Mono', monospace; font-size: .6rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .7rem 1rem; text-align: left;
+    }
+    .ref-table th:first-child { border-radius: 10px 0 0 0; }
+    .ref-table th:last-child  { border-radius: 0 10px 0 0; }
+    .ref-table td { padding: .65rem 1rem; border-bottom: 1px solid var(--gris-claro); vertical-align: top; }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table tr:hover td { background: var(--azul-palido); }
+    .rn { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--azul); font-weight: 700; }
+    .rv { font-family: 'Space Mono', monospace; font-size: .63rem; color: var(--rojo); background: var(--rojo-palido); padding: 2px 7px; border-radius: 4px; }
+    .rd { color: var(--gris); }
+
+    /* reflexión */
+    .reflection {
+      background: linear-gradient(135deg, var(--azul-palido), var(--rojo-palido));
+      border-radius: 20px; padding: 2.4rem;
+      border: 1.5px solid rgba(127,179,232,.35);
+      margin-bottom: 2rem;
+    }
+    .reflection-title {
+      font-family: 'Space Mono', monospace; font-size: .7rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--azul); margin-bottom: 1rem;
+    }
+    .reflection p { font-size: .94rem; line-height: 1.8; color: #374151; }
+
+    /* footer */
+    footer {
+      text-align: center; padding: 2.5rem 2rem;
+      border-top: 1px solid var(--gris-claro);
+      font-size: .68rem; font-family: 'Space Mono', monospace;
+      color: var(--gris); letter-spacing: .08em;
+      background: white;
+    }
+    footer span { color: var(--azul); }
+
+    /* ANIMACIÓN ENTRADA DE SECCIÓN */
+    .seccion {
+      animation: fadeUp .6s ease both;
+    }
+
+    @media (max-width: 768px) {
+      .navbar { padding: 12px 18px; }
+      .nav-links { display: none; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.2rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════ -->
+<nav class="navbar">
+  <a href="index.html" class="btn-back">
+    <svg width="14" height="14" fill="none" viewBox="0 0 14 14">
+      <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Volver al portafolio
+  </a>
+  <ul class="nav-links">
+    <li><a href="#html">HTML</a></li>
+    <li><a href="#css">CSS</a></li>
+    <li><a href="#estilos">Estilos</a></li>
+    <li><a href="#layout">Layout</a></li>
+    <li><a href="#consejos">Consejos</a></li>
+  </ul>
+  <span style="font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.12em;color:var(--gris);">
+    <span style="color:var(--azul);">Práctica</span> · Cultura Digital 2°
+  </span>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<header class="hero">
+  <div class="blob-a"></div>
+  <div class="blob-b"></div>
+  <div class="hero-bg-code" aria-hidden="true">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"/&gt;
+    &lt;title&gt;Mi Página&lt;/title&gt;
+    &lt;link rel="stylesheet" href="estilos.css"/&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;
+      &lt;h1&gt;Hola Mundo&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+      &lt;section&gt;
+        &lt;p&gt;Aprendiendo HTML y CSS&lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+body { background: #f8f6f2; }
+h1   { color: #4a90c4; }
+.card { border-radius: 12px; }
+.flex { display: flex; gap: 1rem; }</div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✦ Portafolio · Cultura Digital 2°</div>
+    <h1 class="hero-title">
+      Práctica<br/>
+      <span class="t-blue">HTML</span> y <span class="t-red">CSS</span>
+    </h1>
+    <p class="hero-sub">
+      Familiarízate con la estructura de código, ejemplos reales, imágenes explicativas y consejos para aprender más rápido.
+    </p>
+    <div class="hero-pills">
+      <span class="pill pill-blue">🏗️ Estructura HTML</span>
+      <span class="pill pill-red">🎨 Estilos CSS</span>
+      <span class="pill pill-green">💡 Consejos</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    comenzar
+    <div class="scroll-arrow"></div>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     CONTENIDO
+══════════════════════════════════════ -->
+<main class="contenido">
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 1 — ¿QUÉ NECESITO?
+───────────────────────────────────── -->
+<section id="inicio" class="seccion">
+  <div class="sec-label">
+    <span class="sl-blue">// 01 · Primeros pasos</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-icon">🖥️</div>
+      <div class="card-title">Herramienta 1</div>
+      <h3>Editor de código</h3>
+      <p>Descarga <strong>Visual Studio Code</strong> (gratis). Es el editor más usado en el mundo. Instala la extensión <strong>Live Server</strong> para ver tus cambios en tiempo real.</p>
+    </div>
+    <div class="card card-red">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Herramienta 2</div>
+      <h3>Navegador web</h3>
+      <p>Usa <strong>Google Chrome</strong> o Firefox. Ambos tienen <strong>DevTools</strong> (tecla F12) que te permiten inspeccionar y modificar el código en vivo.</p>
+    </div>
+    <div class="card card-green">
+      <div class="card-icon">📁</div>
+      <div class="card-title">Organización</div>
+      <h3>Estructura de archivos</h3>
+      <p>Crea una carpeta <strong>mi-proyecto/</strong> con:<br>
+        <code>index.html</code> → tu página<br>
+        <code>estilos.css</code> → tus estilos<br>
+        <code>imagenes/</code> → tus fotos</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Atajo VS Code</div>
+      <h3>Estructura en 1 segundo</h3>
+      <p>Crea un archivo <code>.html</code>, escribe <strong>!</strong> y presiona <strong>Tab</strong>. VS Code genera automáticamente toda la estructura base de HTML5.</p>
+    </div>
+  </div>
+
+  <div class="tip">
+    <div class="box-icon">💡</div>
+    <div class="box-body"><strong>Truco importante:</strong> Antes de escribir tu primer código, crea siempre los dos archivos juntos: <code>index.html</code> y <code>estilos.css</code> en la misma carpeta. Así la conexión entre ellos será más fácil.</div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 2 — ESTRUCTURA HTML
+───────────────────────────────────── -->
+<section id="html" class="seccion">
+  <div class="sec-label">
+    <span class="sl-red">// 02 · Estructura HTML</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p class="prose">Todo documento HTML tiene la misma estructura base. Piensa en ella como el <strong>esqueleto</strong> de tu página — siempre debe estar completa, sin importar qué tan sencilla o compleja sea la página.</p>
+
+  <div class="diagram">
+    <div class="diagram-inner">
+      <div><span class="dc">&lt;!-- 1. Declaración HTML5 --&gt;</span></div>
+      <div><span class="dt">&lt;!</span><span class="da">DOCTYPE</span> <span class="dv">html</span><span class="dt">&gt;</span></div>
+      <br>
+      <div><span class="dt">&lt;html</span> <span class="da">lang</span>=<span class="dv">"es"</span><span class="dt">&gt;</span> <span class="dc">&lt;!-- 2. Raíz --&gt;</span></div>
+      <div class="di"><span class="dt">&lt;head&gt;</span> <span class="dc">&lt;!-- 3. Cabeza (invisible) --&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;meta</span> <span class="da">charset</span>=<span class="dv">"UTF-8"</span><span class="dt">/&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;meta</span> <span class="da">name</span>=<span class="dv">"viewport"</span> <span class="da">content</span>=<span class="dv">"width=device-width"</span><span class="dt">/&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;title&gt;</span><span style="color:#e6edf3">Mi Página</span><span class="dt">&lt;/title&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;link</span> <span class="da">rel</span>=<span class="dv">"stylesheet"</span> <span class="da">href</span>=<span class="dv">"estilos.css"</span><span class="dt">/&gt;</span></div>
+      <div class="di"><span class="dt">&lt;/head&gt;</span></div>
+      <div class="di"><span class="dt">&lt;body&gt;</span> <span class="dc">&lt;!-- 4. Cuerpo (visible) --&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;header&gt;</span><span style="color:#e6edf3">…encabezado…</span><span class="dt">&lt;/header&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;main&gt;</span><span style="color:#e6edf3">…contenido…</span><span class="dt">&lt;/main&gt;</span></div>
+      <div class="di2"><span class="dt">&lt;footer&gt;</span><span style="color:#e6edf3">…pie…</span><span class="dt">&lt;/footer&gt;</span></div>
+      <div class="di"><span class="dt">&lt;/body&gt;</span></div>
+      <div><span class="dt">&lt;/html&gt;</span></div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>&lt;!DOCTYPE html&gt;</strong> Le dice al navegador que el documento usa HTML5. Siempre en la primera línea, sin excepción.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>&lt;html lang="es"&gt;</strong> La etiqueta raíz que envuelve todo. El atributo <code>lang="es"</code> indica que el idioma es español.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>&lt;head&gt;</strong> Contiene información sobre la página que el usuario NO ve: título de la pestaña, fuentes, estilos CSS.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><strong>&lt;body&gt;</strong> Todo lo que el usuario SÍ ve va aquí: textos, imágenes, botones, formularios, tablas.</div>
+    </div>
+  </div>
+
+  <!-- CÓDIGO DE EJEMPLO -->
+  <div class="code-block">
+    <div class="code-top">
+      <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+      <span class="code-file">index.html — estructura completa</span>
+    </div>
+    <div class="code-body"><pre><span class="kw">&lt;!DOCTYPE html&gt;</span>
+<span class="tg">&lt;html</span> <span class="at">lang</span>=<span class="st">"es"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;head&gt;</span>
+  <span class="tg">&lt;meta</span> <span class="at">charset</span>=<span class="st">"UTF-8"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="st">"viewport"</span> <span class="at">content</span>=<span class="st">"width=device-width, initial-scale=1.0"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;title&gt;</span><span class="tx">Práctica HTML y CSS</span><span class="tg">&lt;/title&gt;</span>
+  <span class="tg">&lt;link</span> <span class="at">rel</span>=<span class="st">"stylesheet"</span> <span class="at">href</span>=<span class="st">"estilos.css"</span><span class="tg">/&gt;</span>
+<span class="tg">&lt;/head&gt;</span>
+<span class="tg">&lt;body&gt;</span>
+
+  <span class="tg">&lt;header&gt;</span>
+    <span class="tg">&lt;h1&gt;</span><span class="tx">Mi Primera Página</span><span class="tg">&lt;/h1&gt;</span>
+    <span class="tg">&lt;nav&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"#"</span><span class="tg">&gt;</span><span class="tx">Inicio</span><span class="tg">&lt;/a&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"#"</span><span class="tg">&gt;</span><span class="tx">Contacto</span><span class="tg">&lt;/a&gt;</span>
+    <span class="tg">&lt;/nav&gt;</span>
+  <span class="tg">&lt;/header&gt;</span>
+
+  <span class="tg">&lt;main&gt;</span>
+    <span class="tg">&lt;section&gt;</span>
+      <span class="tg">&lt;h2&gt;</span><span class="tx">Sobre mí</span><span class="tg">&lt;/h2&gt;</span>
+      <span class="tg">&lt;p&gt;</span><span class="tx">Soy estudiante de Cultura Digital.</span><span class="tg">&lt;/p&gt;</span>
+      <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="st">"foto.jpg"</span> <span class="at">alt</span>=<span class="st">"Mi foto"</span><span class="tg">/&gt;</span>
+    <span class="tg">&lt;/section&gt;</span>
+  <span class="tg">&lt;/main&gt;</span>
+
+  <span class="tg">&lt;footer&gt;</span>
+    <span class="tg">&lt;p&gt;</span><span class="tx">© 2025 Mi Nombre</span><span class="tg">&lt;/p&gt;</span>
+  <span class="tg">&lt;/footer&gt;</span>
+
+<span class="tg">&lt;/body&gt;</span>
+<span class="tg">&lt;/html&gt;</span></pre></div>
+  </div>
+
+  <div class="preview-label">Resultado en el navegador</div>
+  <div class="preview-box">
+    <div style="background:#1a1a2e;color:white;padding:12px 18px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;">
+      <strong style="font-family:'Space Mono',monospace;font-size:.8rem;">Mi Primera Página</strong>
+      <div style="display:flex;gap:12px;"><a href="#" style="color:#7fb3e8;font-size:.8rem;text-decoration:none;">Inicio</a><a href="#" style="color:#7fb3e8;font-size:.8rem;text-decoration:none;">Contacto</a></div>
+    </div>
+    <div style="padding:16px 18px;border:1px solid #e8edf4;border-top:none;border-radius:0 0 8px 8px;">
+      <h2 style="font-size:1.2rem;margin-bottom:.5rem;">Sobre mí</h2>
+      <p style="color:#374151;font-size:.9rem;margin-bottom:.8rem;">Soy estudiante de Cultura Digital.</p>
+      <div style="width:120px;height:80px;background:linear-gradient(135deg,#deedf9,#fde8e8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2rem;">🖼️</div>
+    </div>
+    <div style="background:#f8f6f2;padding:10px 18px;border-radius:0 0 8px 8px;font-size:.8rem;color:#6b7280;border:1px solid #e8edf4;border-top:none;">© 2025 Mi Nombre</div>
+  </div>
+
+  <!-- TABLA ETIQUETAS ESENCIALES -->
+  <div class="sec-label" style="margin-top:2.5rem;">
+    <span class="sl-blue">// Etiquetas esenciales</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <table class="ref-table">
+    <thead>
+      <tr><th>Etiqueta</th><th>Para qué sirve</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="rn">&lt;h1&gt;…&lt;h6&gt;</td><td class="rd">Títulos de mayor a menor importancia</td><td><span class="rv">&lt;h1&gt;Título&lt;/h1&gt;</span></td></tr>
+      <tr><td class="rn">&lt;p&gt;</td><td class="rd">Párrafo de texto</td><td><span class="rv">&lt;p&gt;Texto&lt;/p&gt;</span></td></tr>
+      <tr><td class="rn">&lt;a&gt;</td><td class="rd">Enlace a otra página o sección</td><td><span class="rv">&lt;a href="url"&gt;click&lt;/a&gt;</span></td></tr>
+      <tr><td class="rn">&lt;img&gt;</td><td class="rd">Imagen (no tiene etiqueta de cierre)</td><td><span class="rv">&lt;img src="foto.jpg" alt="desc"/&gt;</span></td></tr>
+      <tr><td class="rn">&lt;ul&gt; / &lt;ol&gt;</td><td class="rd">Lista sin orden / con orden</td><td><span class="rv">&lt;ul&gt;&lt;li&gt;ítem&lt;/li&gt;&lt;/ul&gt;</span></td></tr>
+      <tr><td class="rn">&lt;div&gt;</td><td class="rd">Contenedor genérico de bloque</td><td><span class="rv">&lt;div class="caja"&gt;…&lt;/div&gt;</span></td></tr>
+      <tr><td class="rn">&lt;span&gt;</td><td class="rd">Contenedor en línea para texto</td><td><span class="rv">&lt;span class="rojo"&gt;texto&lt;/span&gt;</span></td></tr>
+      <tr><td class="rn">&lt;strong&gt;</td><td class="rd">Texto en negrita con importancia</td><td><span class="rv">&lt;strong&gt;importante&lt;/strong&gt;</span></td></tr>
+      <tr><td class="rn">&lt;button&gt;</td><td class="rd">Botón interactivo</td><td><span class="rv">&lt;button&gt;Enviar&lt;/button&gt;</span></td></tr>
+      <tr><td class="rn">&lt;form&gt;</td><td class="rd">Formulario de datos</td><td><span class="rv">&lt;form action=""&gt;…&lt;/form&gt;</span></td></tr>
+      <tr><td class="rn">&lt;input&gt;</td><td class="rd">Campo de entrada (texto, email…)</td><td><span class="rv">&lt;input type="text"/&gt;</span></td></tr>
+      <tr><td class="rn">&lt;header&gt;</td><td class="rd">Encabezado semántico</td><td><span class="rv">&lt;header&gt;…&lt;/header&gt;</span></td></tr>
+      <tr><td class="rn">&lt;main&gt;</td><td class="rd">Contenido principal (uno por página)</td><td><span class="rv">&lt;main&gt;…&lt;/main&gt;</span></td></tr>
+      <tr><td class="rn">&lt;footer&gt;</td><td class="rd">Pie de página</td><td><span class="rv">&lt;footer&gt;…&lt;/footer&gt;</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="box-icon">⚠️</div>
+    <div class="box-body"><strong>Recuerda:</strong> casi todas las etiquetas tienen apertura <code>&lt;p&gt;</code> y cierre <code>&lt;/p&gt;</code>. Las únicas que NO se cierran son <code>&lt;img&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code> y <code>&lt;meta&gt;</code>.</div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 3 — ESTRUCTURA CSS
+───────────────────────────────────── -->
+<section id="css" class="seccion">
+  <div class="sec-label">
+    <span class="sl-green">// 03 · Estructura CSS</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p class="prose">Una regla CSS tiene tres partes: el <strong>selector</strong> (a quién aplico el estilo), la <strong>propiedad</strong> (qué cambio) y el <strong>valor</strong> (cómo lo cambio). Todo va encerrado entre llaves <code>{ }</code>.</p>
+
+  <div class="diagram">
+    <div class="diagram-inner">
+      <div><span class="dc">/* Anatomía de una regla CSS */</span></div>
+      <br>
+      <div>
+        <span class="dt">h1</span>
+        <span style="color:#e6edf3;"> {</span>
+        <span class="dc">  ← selector (apunta al &lt;h1&gt;)</span>
+      </div>
+      <div class="di">
+        <span class="da">color</span>
+        <span style="color:#e6edf3;">:</span>
+        <span class="dv"> #4a90c4</span>
+        <span style="color:#e6edf3;">;</span>
+        <span class="dc">  ← propiedad: valor;</span>
+      </div>
+      <div class="di">
+        <span class="da">font-size</span>
+        <span style="color:#e6edf3;">:</span>
+        <span class="dv"> 2rem</span>
+        <span style="color:#e6edf3;">;</span>
+      </div>
+      <div class="di">
+        <span class="da">margin-bottom</span>
+        <span style="color:#e6edf3;">:</span>
+        <span class="dv"> 1rem</span>
+        <span style="color:#e6edf3;">;</span>
+      </div>
+      <div>
+        <span style="color:#e6edf3;">}</span>
+        <span class="dc">  ← cierre de la regla</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-top">
+      <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+      <span class="code-file">estilos.css — estructura completa</span>
+    </div>
+    <div class="code-body"><pre><span class="cm">/* ── 1. RESET BÁSICO ── */</span>
+<span class="sel">*</span> {
+  <span class="pr">margin</span>: <span class="nm">0</span>;
+  <span class="pr">padding</span>: <span class="nm">0</span>;
+  <span class="pr">box-sizing</span>: <span class="va">border-box</span>;
+}
+
+<span class="cm">/* ── 2. VARIABLES ── */</span>
+<span class="sel">:root</span> {
+  <span class="pr">--color-primario</span>: <span class="hex">#4a90c4</span>;
+  <span class="pr">--color-secundario</span>: <span class="hex">#c44a4a</span>;
+  <span class="pr">--fuente</span>: <span class="st">'DM Sans'</span>, <span class="va">sans-serif</span>;
+  <span class="pr">--radio</span>: <span class="nm">12px</span>;
+}
+
+<span class="cm">/* ── 3. TIPOGRAFÍA BASE ── */</span>
+<span class="sel">body</span> {
+  <span class="pr">font-family</span>: <span class="fn">var</span>(<span class="pr">--fuente</span>);
+  <span class="pr">font-size</span>: <span class="nm">16px</span>;
+  <span class="pr">line-height</span>: <span class="nm">1.6</span>;
+  <span class="pr">color</span>: <span class="hex">#374151</span>;
+  <span class="pr">background</span>: <span class="hex">#f8f6f2</span>;
+}
+
+<span class="cm">/* ── 4. TÍTULOS ── */</span>
+<span class="sel">h1</span> { <span class="pr">font-size</span>: <span class="nm">2.5rem</span>; <span class="pr">color</span>: <span class="fn">var</span>(<span class="pr">--color-primario</span>); }
+<span class="sel">h2</span> { <span class="pr">font-size</span>: <span class="nm">1.8rem</span>; <span class="pr">margin-bottom</span>: <span class="nm">1rem</span>; }
+<span class="sel">h3</span> { <span class="pr">font-size</span>: <span class="nm">1.2rem</span>; }
+
+<span class="cm">/* ── 5. CLASES REUTILIZABLES ── */</span>
+<span class="sel">.contenedor</span> {
+  <span class="pr">max-width</span>: <span class="nm">1100px</span>;
+  <span class="pr">margin</span>: <span class="nm">0 auto</span>;
+  <span class="pr">padding</span>: <span class="nm">0 1.5rem</span>;
+}
+
+<span class="sel">.tarjeta</span> {
+  <span class="pr">background</span>: <span class="va">white</span>;
+  <span class="pr">border-radius</span>: <span class="fn">var</span>(<span class="pr">--radio</span>);
+  <span class="pr">padding</span>: <span class="nm">1.5rem</span>;
+  <span class="pr">box-shadow</span>: <span class="nm">0 4px 20px</span> <span class="fn">rgba</span>(<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">.08</span>);
+}
+
+<span class="cm">/* ── 6. INTERACTIVIDAD ── */</span>
+<span class="sel">.boton</span> {
+  <span class="pr">background</span>: <span class="fn">var</span>(<span class="pr">--color-primario</span>);
+  <span class="pr">color</span>: <span class="va">white</span>;
+  <span class="pr">padding</span>: <span class="nm">10px 24px</span>;
+  <span class="pr">border</span>: <span class="va">none</span>;
+  <span class="pr">border-radius</span>: <span class="nm">8px</span>;
+  <span class="pr">cursor</span>: <span class="va">pointer</span>;
+  <span class="pr">transition</span>: <span class="va">all</span> <span class="nm">.3s</span> <span class="va">ease</span>;
+}
+<span class="sel">.boton:hover</span> {
+  <span class="pr">background</span>: <span class="fn">var</span>(<span class="pr">--color-secundario</span>);
+  <span class="pr">transform</span>: <span class="fn">translateY</span>(<span class="nm">-3px</span>);
+}</pre></div>
+  </div>
+
+  <!-- DEMO SELECTORES -->
+  <div class="sec-label" style="margin-top:2.5rem;">
+    <span class="sl-red">// Selectores más usados</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <table class="ref-table">
+    <thead>
+      <tr><th>Selector</th><th>Qué selecciona</th><th>Ejemplo CSS</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="rn">etiqueta</td><td class="rd">Todos los elementos con esa etiqueta</td><td><span class="rv">p { color: red; }</span></td></tr>
+      <tr><td class="rn">.clase</td><td class="rd">Elementos con ese class="" (el más usado)</td><td><span class="rv">.tarjeta { padding: 1rem; }</span></td></tr>
+      <tr><td class="rn">#id</td><td class="rd">Un único elemento con ese id=""</td><td><span class="rv">#nav { display: flex; }</span></td></tr>
+      <tr><td class="rn">*</td><td class="rd">Todos los elementos (reset universal)</td><td><span class="rv">* { box-sizing: border-box; }</span></td></tr>
+      <tr><td class="rn">div p</td><td class="rd">Los &lt;p&gt; que estén dentro de un &lt;div&gt;</td><td><span class="rv">div p { margin: .5rem; }</span></td></tr>
+      <tr><td class="rn">:hover</td><td class="rd">Cuando el mouse pasa por encima</td><td><span class="rv">a:hover { color: blue; }</span></td></tr>
+      <tr><td class="rn">::before</td><td class="rd">Inserta contenido antes del elemento</td><td><span class="rv">h2::before { content: "✦ "; }</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 4 — PROPIEDADES CSS
+───────────────────────────────────── -->
+<section id="estilos" class="seccion">
+  <div class="sec-label">
+    <span class="sl-amber">// 04 · Propiedades CSS en acción</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- COLORES -->
+  <p class="prose"><strong>Colores</strong> — CSS acepta colores en varios formatos:</p>
+  <div class="demo-colores">
+    <div class="demo-color-box" style="background:#4a90c4;">#4a90c4<br>HEX</div>
+    <div class="demo-color-box" style="background:rgb(196,74,74);">rgb(196,74,74)<br>RGB</div>
+    <div class="demo-color-box" style="background:rgba(74,144,196,.6);">rgba(.6)<br>RGBA</div>
+    <div class="demo-color-box" style="background:hsl(207,46%,53%);">hsl(207,46%,53%)<br>HSL</div>
+    <div class="demo-color-box" style="background:steelblue;">steelblue<br>Nombre</div>
+    <div class="demo-color-box" style="background:linear-gradient(135deg,#4a90c4,#c44a4a);">linear-gradient<br>Gradiente</div>
+  </div>
+
+  <!-- TIPOGRAFÍA -->
+  <p class="prose"><strong>Tipografía</strong> — Controla todo el texto:</p>
+  <div class="demo-tipo">
+    <p style="font-size:2rem;font-weight:700;color:#4a90c4;line-height:1.1;margin-bottom:.4rem;">font-size: 2rem; color: azul</p>
+    <p style="font-size:1.2rem;font-weight:600;color:#374151;margin-bottom:.4rem;">font-weight: 600; text normal</p>
+    <p style="font-size:.9rem;font-style:italic;color:#6b7280;margin-bottom:.4rem;">font-style: italic; letter-spacing: .05em</p>
+    <p style="font-size:.85rem;text-transform:uppercase;letter-spacing:.2em;color:#c44a4a;margin-bottom:.4rem;">TEXT-TRANSFORM: UPPERCASE</p>
+    <p style="font-size:.9rem;text-decoration:underline;color:#4a90c4;margin-bottom:.4rem;">text-decoration: underline</p>
+    <p style="font-family:'Courier New',monospace;font-size:.85rem;background:#f1f5f9;padding:8px 12px;border-radius:6px;">font-family: monospace — para código</p>
+  </div>
+
+  <!-- BOX MODEL -->
+  <p class="prose"><strong>Modelo de caja</strong> — Todo elemento HTML es una caja con 4 capas:</p>
+
+  <div class="box-model-visual">
+    <div class="bm-margin">
+      <span class="bm-lbl">margin</span>
+      <div class="bm-border">
+        <span class="bm-lbl">border</span>
+        <div class="bm-padding">
+          <span class="bm-lbl">padding</span>
+          <div class="bm-content">content</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-top">
+      <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+      <span class="code-file">box-model.css</span>
+    </div>
+    <div class="code-body"><pre><span class="sel">.mi-caja</span> {
+  <span class="cm">/* Tamaño del contenido */</span>
+  <span class="pr">width</span>: <span class="nm">300px</span>;
+  <span class="pr">height</span>: <span class="nm">150px</span>;
+
+  <span class="cm">/* Padding — espacio interior */</span>
+  <span class="pr">padding</span>: <span class="nm">20px</span>;             <span class="cm">/* todos lados */</span>
+  <span class="pr">padding</span>: <span class="nm">10px 20px</span>;       <span class="cm">/* vertical horizontal */</span>
+
+  <span class="cm">/* Border — borde visible */</span>
+  <span class="pr">border</span>: <span class="nm">2px</span> <span class="va">solid</span> <span class="hex">#4a90c4</span>;
+  <span class="pr">border-radius</span>: <span class="nm">12px</span>;      <span class="cm">/* esquinas redondeadas */</span>
+
+  <span class="cm">/* Margin — espacio exterior */</span>
+  <span class="pr">margin</span>: <span class="nm">20px</span>;
+  <span class="pr">margin</span>: <span class="nm">0 auto</span>;           <span class="cm">/* centrar horizontalmente */</span>
+
+  <span class="cm">/* Sombra */</span>
+  <span class="pr">box-shadow</span>: <span class="nm">0 4px 20px</span> <span class="fn">rgba</span>(<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">.1</span>);
+}</pre></div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 5 — LAYOUT (FLEXBOX)
+───────────────────────────────────── -->
+<section id="layout" class="seccion">
+  <div class="sec-label">
+    <span class="sl-blue">// 05 · Layout con Flexbox</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p class="prose"><strong>Flexbox</strong> es el sistema más sencillo para organizar elementos en fila o columna. Con una sola propiedad (<code>display: flex</code>) transformas cómo se colocan los elementos hijos.</p>
+
+  <div class="code-block">
+    <div class="code-top">
+      <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+      <span class="code-file">flexbox.css</span>
+    </div>
+    <div class="code-body"><pre><span class="sel">.fila</span> {
+  <span class="pr">display</span>: <span class="va">flex</span>;
+  <span class="pr">justify-content</span>: <span class="va">space-between</span>; <span class="cm">/* distribución horizontal */</span>
+  <span class="pr">align-items</span>: <span class="va">center</span>;            <span class="cm">/* alineación vertical */</span>
+  <span class="pr">gap</span>: <span class="nm">1rem</span>;                       <span class="cm">/* espacio entre hijos */</span>
+  <span class="pr">flex-wrap</span>: <span class="va">wrap</span>;                 <span class="cm">/* se adapta al ancho */</span>
+}
+
+<span class="cm">/* Centrar perfectamente */</span>
+<span class="sel">.centrado</span> {
+  <span class="pr">display</span>: <span class="va">flex</span>;
+  <span class="pr">justify-content</span>: <span class="va">center</span>;
+  <span class="pr">align-items</span>: <span class="va">center</span>;
+}
+
+<span class="cm">/* Hijo que ocupa todo el espacio disponible */</span>
+<span class="sel">.hijo-grande</span> { <span class="pr">flex</span>: <span class="nm">1</span>; }</pre></div>
+  </div>
+
+  <div class="preview-label">Ejemplos visuales de Flexbox</div>
+
+  <div class="flex-vis">
+    <div class="fv-label">justify-content: space-between</div>
+    <div class="fv-row" style="justify-content:space-between;">
+      <div class="fv-item">Elemento A</div>
+      <div class="fv-item">Elemento B</div>
+      <div class="fv-item">Elemento C</div>
+    </div>
+  </div>
+
+  <div class="flex-vis">
+    <div class="fv-label">justify-content: center + gap: 10px</div>
+    <div class="fv-row" style="justify-content:center;gap:10px;">
+      <div class="fv-item fv-item-red">X</div>
+      <div class="fv-item fv-item-red">Y</div>
+      <div class="fv-item fv-item-red">Z</div>
+    </div>
+  </div>
+
+  <div class="flex-vis" style="margin-bottom:1.8rem;">
+    <div class="fv-label">flex: 1 (igual) y flex: 2 (doble tamaño)</div>
+    <div class="fv-row">
+      <div class="fv-item" style="flex:1;">flex:1</div>
+      <div class="fv-item fv-item-red" style="flex:2;">flex:2 (doble)</div>
+      <div class="fv-item" style="flex:1;">flex:1</div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <div class="box-icon">💡</div>
+    <div class="box-body"><strong>Flexbox Froggy:</strong> Juega en <strong>flexboxfroggy.com</strong> para aprender Flexbox de forma divertida con 24 niveles interactivos. ¡Es completamente gratis!</div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 6 — EJEMPLO COMPLETO
+───────────────────────────────────── -->
+<section id="ejemplo" class="seccion">
+  <div class="sec-label">
+    <span class="sl-red">// 06 · Ejemplo completo</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <p class="prose">Aquí tienes un ejemplo que combina HTML y CSS para crear una tarjeta de perfil completa. Puedes copiarlo y practicar cambiando los valores.</p>
+
+  <div class="code-block">
+    <div class="code-top">
+      <div class="dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+      <span class="code-file">tarjeta-perfil.html</span>
+    </div>
+    <div class="code-body"><pre><span class="cm">&lt;!-- HTML --&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="st">"tarjeta"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="st">"avatar"</span><span class="tg">&gt;</span><span class="tx">👩‍💻</span><span class="tg">&lt;/div&gt;</span>
+  <span class="tg">&lt;h2</span> <span class="at">class</span>=<span class="st">"nombre"</span><span class="tg">&gt;</span><span class="tx">María López</span><span class="tg">&lt;/h2&gt;</span>
+  <span class="tg">&lt;p</span> <span class="at">class</span>=<span class="st">"rol"</span><span class="tg">&gt;</span><span class="tx">Cultura Digital 2°</span><span class="tg">&lt;/p&gt;</span>
+  <span class="tg">&lt;p</span> <span class="at">class</span>=<span class="st">"descripcion"</span><span class="tg">&gt;</span>
+    <span class="tx">Aprendiendo HTML y CSS desde cero.</span>
+  <span class="tg">&lt;/p&gt;</span>
+  <span class="tg">&lt;button</span> <span class="at">class</span>=<span class="st">"boton"</span><span class="tg">&gt;</span><span class="tx">Ver portafolio</span><span class="tg">&lt;/button&gt;</span>
+<span class="tg">&lt;/div&gt;</span>
+
+<span class="cm">/* CSS */</span>
+<span class="sel">.tarjeta</span> {
+  <span class="pr">background</span>: <span class="va">white</span>;
+  <span class="pr">border-radius</span>: <span class="nm">20px</span>;
+  <span class="pr">padding</span>: <span class="nm">2rem</span>;
+  <span class="pr">text-align</span>: <span class="va">center</span>;
+  <span class="pr">max-width</span>: <span class="nm">300px</span>;
+  <span class="pr">box-shadow</span>: <span class="nm">0 8px 30px</span> <span class="fn">rgba</span>(<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">.1</span>);
+  <span class="pr">border</span>: <span class="nm">2px</span> <span class="va">solid</span> <span class="hex">#e8edf4</span>;
+  <span class="pr">transition</span>: <span class="va">transform</span> <span class="nm">.3s</span>;
+}
+<span class="sel">.tarjeta:hover</span> { <span class="pr">transform</span>: <span class="fn">translateY</span>(<span class="nm">-8px</span>); }
+
+<span class="sel">.avatar</span> {
+  <span class="pr">font-size</span>: <span class="nm">4rem</span>;
+  <span class="pr">margin-bottom</span>: <span class="nm">1rem</span>;
+}
+<span class="sel">.nombre</span> { <span class="pr">font-size</span>: <span class="nm">1.3rem</span>; <span class="pr">color</span>: <span class="hex">#1a1a2e</span>; }
+<span class="sel">.rol</span>    { <span class="pr">color</span>: <span class="hex">#4a90c4</span>; <span class="pr">font-size</span>: <span class="nm">.85rem</span>; <span class="pr">margin-bottom</span>: <span class="nm">.5rem</span>; }
+<span class="sel">.descripcion</span> { <span class="pr">color</span>: <span class="hex">#6b7280</span>; <span class="pr">font-size</span>: <span class="nm">.85rem</span>; <span class="pr">margin-bottom</span>: <span class="nm">1.2rem</span>; }
+
+<span class="sel">.boton</span> {
+  <span class="pr">background</span>: <span class="hex">#4a90c4</span>;
+  <span class="pr">color</span>: <span class="va">white</span>;
+  <span class="pr">border</span>: <span class="va">none</span>;
+  <span class="pr">padding</span>: <span class="nm">10px 24px</span>;
+  <span class="pr">border-radius</span>: <span class="nm">999px</span>;
+  <span class="pr">cursor</span>: <span class="va">pointer</span>;
+  <span class="pr">font-size</span>: <span class="nm">.9rem</span>;
+  <span class="pr">transition</span>: <span class="va">background</span> <span class="nm">.3s</span>;
+}
+<span class="sel">.boton:hover</span> { <span class="pr">background</span>: <span class="hex">#c44a4a</span>; }</pre></div>
+  </div>
+
+  <div class="preview-label">Resultado en el navegador</div>
+  <div class="preview-box" style="display:flex;justify-content:center;">
+    <div style="background:white;border-radius:20px;padding:2rem;text-align:center;max-width:260px;box-shadow:0 8px 30px rgba(0,0,0,.1);border:2px solid #e8edf4;transition:transform .3s;">
+      <div style="font-size:3.5rem;margin-bottom:.8rem;">👩‍💻</div>
+      <h2 style="font-size:1.2rem;color:#1a1a2e;margin-bottom:.3rem;">María López</h2>
+      <p style="color:#4a90c4;font-size:.82rem;margin-bottom:.5rem;">Cultura Digital 2°</p>
+      <p style="color:#6b7280;font-size:.82rem;margin-bottom:1.2rem;">Aprendiendo HTML y CSS desde cero.</p>
+      <button style="background:#4a90c4;color:white;border:none;padding:9px 22px;border-radius:999px;cursor:pointer;font-size:.85rem;">Ver portafolio</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────────────────────────────────
+     SECCIÓN 7 — CONSEJOS
+───────────────────────────────────── -->
+<section id="consejos" class="seccion">
+  <div class="sec-label">
+    <span class="sl-green">// 07 · Consejos para aprender más rápido</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="checklist">
+    <div class="chk"><span class="chk-icon">🖊️</span> <div><strong>Escribe el código a mano.</strong> No copies y pegues al principio. Escribir cada etiqueta y propiedad ayuda a tu cerebro a memorizarlas más rápido.</div></div>
+    <div class="chk"><span class="chk-icon">🔁</span> <div><strong>Practica todos los días aunque sea 20 minutos.</strong> La consistencia es más importante que practicar 3 horas un solo día.</div></div>
+    <div class="chk"><span class="chk-icon">🔍</span> <div><strong>Usa F12 (DevTools).</strong> Inspecciona cualquier página web para ver su código HTML y CSS. Es la mejor forma de aprender de páginas reales.</div></div>
+    <div class="chk"><span class="chk-icon">🧪</span> <div><strong>Experimenta y rompe cosas.</strong> Cambia valores, borra etiquetas y observa qué pasa. Aprenderás más del error que del éxito.</div></div>
+    <div class="chk"><span class="chk-icon">📋</span> <div><strong>Ten a la mano una hoja de referencia.</strong> No memorices todo desde el principio. Consultar es normal y hasta los profesionales lo hacen.</div></div>
+    <div class="chk"><span class="chk-icon">🌱</span> <div><strong>Empieza simple.</strong> Haz primero el HTML sin estilos. Cuando el contenido esté correcto, agrega el CSS. No intentes hacer todo al mismo tiempo.</div></div>
+    <div class="chk"><span class="chk-icon">💬</span> <div><strong>Usa comentarios en tu código.</strong> Escribe <code>&lt;!-- esto es un nav --&gt;</code> en HTML o <code>/* botón principal */</code> en CSS para recordar para qué sirve cada parte.</div></div>
+    <div class="chk"><span class="chk-icon">📱</span> <div><strong>Prueba en celular.</strong> Usa DevTools (F12 → ícono de celular) para ver cómo se ve tu página en diferentes tamaños de pantalla.</div></div>
+    <div class="chk"><span class="chk-icon">🎮</span> <div><strong>Juega Flexbox Froggy y Grid Garden.</strong> Son juegos gratis en el navegador que te enseñan Flexbox y CSS Grid de forma visual e interactiva.</div></div>
+    <div class="chk"><span class="chk-icon">📖</span> <div><strong>Consulta MDN Web Docs.</strong> Es la documentación oficial de HTML y CSS en español. Busca cualquier etiqueta o propiedad en <strong>developer.mozilla.org/es</strong></div></div>
+  </div>
+
+  <!-- ADVERTENCIAS COMUNES -->
+  <div class="warn">
+    <div class="box-icon">⚠️</div>
+    <div class="box-body"><strong>Error #1 más común:</strong> Olvidar cerrar etiquetas HTML. Si abres <code>&lt;div&gt;</code> debes cerrarlo con <code>&lt;/div&gt;</code>. Usa la indentación para visualizar mejor la jerarquía.</div>
+  </div>
+  <div class="warn">
+    <div class="box-icon">⚠️</div>
+    <div class="box-body"><strong>Error #2 más común en CSS:</strong> Olvidar el punto y coma <code>;</code> al final de cada propiedad. Un solo punto y coma faltante puede hacer que toda la regla no funcione.</div>
+  </div>
+  <div class="ok">
+    <div class="box-icon">✅</div>
+    <div class="box-body"><strong>Validador oficial:</strong> Pega tu código HTML en <strong>validator.w3.org</strong> y tu CSS en <strong>jigsaw.w3.org/css-validator</strong> para que el W3C te diga si hay errores.</div>
+  </div>
+  <div class="nota">
+    <div class="box-icon">🐰</div>
+    <div class="box-body"><strong>Consejo secreto:</strong> Los mejores desarrolladores no saben todo de memoria — saben <em>cómo buscar</em>. Google + MDN + ChatGPT son tus mejores herramientas. ¡Úsalas sin pena!</div>
+  </div>
+</section>
+
+
+<!-- REFLEXIÓN -->
+<div class="sec-label">
+  <span class="sl-blue">// Reflexión</span>
+  <div class="sec-line"></div>
+</div>
+<div class="reflection">
+  <div class="reflection-title">✦ ¿Qué aprendí con esta práctica?</div>
+  <p>
+    Con esta práctica entendí que HTML y CSS trabajan en equipo: HTML pone la estructura y CSS le da vida visual. Lo más importante fue familiarizarme con la <strong>forma de escribir el código</strong>: las etiquetas, las llaves, los dos puntos y los puntos y coma tienen un lugar exacto. También aprendí que el Box Model es fundamental para entender cómo se posiciona todo en una página, y que Flexbox hace mucho más sencillo el trabajo de organizar elementos. El siguiente paso es practicar creando páginas reales combinando todo lo aprendido.
+  </p>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span>Práctica HTML y CSS</span> &nbsp;·&nbsp; Portafolio de Cultura Digital 2° &nbsp;·&nbsp; 2025
+</footer>
+
+</body>
+</html>

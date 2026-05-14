@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>T-03 · Guía HTML5 desde Cero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --blue-soft: #b8d4f0;
+      --blue-mid:  #7fb3e8;
+      --blue-deep: #4a90c4;
+      --blue-pale: #deedf9;
+      --red-soft:  #f5b8b8;
+      --red-mid:   #e88080;
+      --red-deep:  #c44a4a;
+      --red-pale:  #fde8e8;
+      --green:     #22c55e;
+      --green-pale:#dcfce7;
+      --amber:     #f59e0b;
+      --amber-pale:#fef3c7;
+      --cream:     #f8f6f2;
+      --dark:      #1a1a2e;
+      --gray:      #6b7280;
+      --gray-light:#e8edf4;
+      --white:     #ffffff;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden;}
+
+    /* ── NAV ── */
+    .nav-bar{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      padding:14px 32px;
+      display:flex;align-items:center;justify-content:space-between;
+      backdrop-filter:blur(14px);
+      background:rgba(248,246,242,0.82);
+      border-bottom:1px solid rgba(184,212,240,0.3);
+    }
+    .btn-back{
+      display:inline-flex;align-items:center;gap:9px;
+      font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;
+      color:var(--dark);text-decoration:none;
+      background:white;border:1.5px solid var(--gray-light);
+      border-radius:999px;padding:8px 18px;
+      transition:border-color .25s,color .25s,transform .2s;
+    }
+    .btn-back:hover{border-color:var(--blue-mid);color:var(--blue-deep);transform:translateX(-3px);}
+    .nav-tag{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.12em;color:var(--gray);}
+    .nav-tag span{color:var(--blue-deep);}
+
+    /* ── HERO (portada única) ── */
+    .hero{
+      min-height:100vh;
+      display:grid;grid-template-columns:1fr 1fr;
+      position:relative;overflow:hidden;
+    }
+    /* left – dark code panel */
+    .hero-left{
+      background:var(--dark);
+      display:flex;flex-direction:column;justify-content:flex-end;
+      padding:8rem 4rem 5rem;position:relative;overflow:hidden;
+    }
+    .hero-left::before{
+      content:'';position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(127,179,232,.14) 1px,transparent 1px);
+      background-size:34px 34px;
+    }
+    /* floating code text BG */
+    .hero-code-bg{
+      position:absolute;top:70px;left:0;right:0;
+      font-family:'Space Mono',monospace;font-size:.62rem;
+      line-height:1.7;color:rgba(127,179,232,.12);
+      padding:0 2.5rem;pointer-events:none;overflow:hidden;
+      max-height:55vh;
+    }
+    .orb2{position:absolute;width:350px;height:350px;border-radius:50%;
+      background:radial-gradient(circle,rgba(74,144,196,.28),transparent 70%);
+      top:-60px;right:-60px;animation:orbPulse 7s ease-in-out infinite;}
+    @keyframes orbPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+
+    .hero-left-content{position:relative;z-index:2;}
+    .hero-task-num{
+      font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.2em;
+      color:var(--blue-mid);text-transform:uppercase;margin-bottom:1.4rem;
+      display:flex;align-items:center;gap:10px;
+    }
+    .hero-task-num::before{content:'';width:24px;height:1.5px;background:var(--blue-mid);}
+    .hero-title{
+      font-family:'Space Mono',monospace;
+      font-size:clamp(2.4rem,4.5vw,4rem);font-weight:700;
+      line-height:.95;color:white;margin-bottom:1rem;letter-spacing:-.03em;
+    }
+    .hero-title .t-blue{color:var(--blue-mid);}
+    .hero-title .t-red{color:var(--red-mid);}
+    .hero-tagline{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.65;max-width:320px;margin-bottom:2rem;}
+    .hero-pills{display:flex;flex-wrap:wrap;gap:8px;}
+    .hpill{
+      font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+      text-transform:uppercase;padding:5px 12px;border-radius:999px;border:1.5px solid;
+    }
+    .hpill-blue{border-color:var(--blue-mid);color:var(--blue-mid);background:rgba(127,179,232,.08);}
+    .hpill-red{border-color:var(--red-mid);color:var(--red-mid);background:rgba(232,128,128,.08);}
+    .hpill-green{border-color:#4ade80;color:#4ade80;background:rgba(74,222,128,.08);}
+
+    /* right – light panel with chapters index */
+    .hero-right{
+      background:linear-gradient(155deg,var(--blue-pale) 0%,var(--cream) 55%,var(--red-pale) 100%);
+      display:flex;flex-direction:column;justify-content:center;
+      padding:8rem 3rem 5rem;position:relative;overflow:hidden;gap:1rem;
+    }
+    .hero-right::before{
+      content:'';position:absolute;inset:0;
+      background-image:
+        linear-gradient(var(--blue-soft) 1px,transparent 1px),
+        linear-gradient(90deg,var(--blue-soft) 1px,transparent 1px);
+      background-size:40px 40px;opacity:.25;
+    }
+    .index-title{
+      position:relative;z-index:1;
+      font-family:'Space Mono',monospace;font-size:.68rem;
+      letter-spacing:.16em;text-transform:uppercase;
+      color:var(--blue-deep);margin-bottom:.6rem;
+    }
+    .chapter-list{position:relative;z-index:1;display:flex;flex-direction:column;gap:.5rem;}
+    .chap-link{
+      display:flex;align-items:center;gap:12px;
+      background:white;border:1.5px solid var(--gray-light);border-radius:12px;
+      padding:.7rem 1rem;text-decoration:none;color:var(--dark);
+      transition:border-color .25s,transform .2s,box-shadow .25s;
+    }
+    .chap-link:hover{border-color:var(--blue-mid);transform:translateX(4px);box-shadow:0 4px 16px rgba(74,144,196,.12);}
+    .chap-num{
+      font-family:'Space Mono',monospace;font-size:.6rem;
+      color:var(--blue-deep);background:var(--blue-pale);
+      border-radius:6px;padding:2px 7px;min-width:32px;text-align:center;
+    }
+    .chap-name{font-size:.82rem;font-weight:500;}
+    .chap-arrow{margin-left:auto;color:var(--blue-mid);font-size:.9rem;}
+
+    .scroll-hint{
+      position:absolute;bottom:30px;left:25%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      color:rgba(255,255,255,.3);font-size:.6rem;font-family:'Space Mono',monospace;
+      letter-spacing:.1em;text-transform:uppercase;
+    }
+    .scroll-arrow{width:17px;height:17px;border-right:2px solid var(--blue-mid);
+      border-bottom:2px solid var(--blue-mid);transform:rotate(45deg);
+      animation:bounce 1.8s ease infinite;}
+    @keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0);}50%{transform:rotate(45deg) translateY(6px);}}
+
+    /* ── CONTENT ── */
+    .content{max-width:900px;margin:0 auto;padding:5rem 2rem 7rem;}
+
+    /* section labels */
+    .s-label{display:flex;align-items:center;gap:14px;margin-bottom:2rem;}
+    .s-label span{
+      font-family:'Space Mono',monospace;font-size:.68rem;
+      letter-spacing:.15em;text-transform:uppercase;white-space:nowrap;
+      padding:5px 12px;border-radius:4px;
+    }
+    .sl-blue{color:var(--blue-deep);background:var(--blue-pale);}
+    .sl-red{color:var(--red-deep);background:var(--red-pale);}
+    .sl-green{color:#15803d;background:var(--green-pale);}
+    .sl-amber{color:#92400e;background:var(--amber-pale);}
+    .s-line{flex:1;height:1px;background:var(--gray-light);}
+
+    /* chapter anchor */
+    .chapter{margin-bottom:4.5rem;}
+    .chapter-header{
+      background:var(--dark);border-radius:16px;padding:1.6rem 2rem;
+      margin-bottom:1.8rem;position:relative;overflow:hidden;
+    }
+    .chapter-header::before{
+      content:'';position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(127,179,232,.1) 1px,transparent 1px);
+      background-size:28px 28px;
+    }
+    .chapter-header-content{position:relative;z-index:1;}
+    .ch-num{
+      font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.18em;
+      color:var(--blue-mid);text-transform:uppercase;margin-bottom:.5rem;
+    }
+    .ch-title{
+      font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;
+      color:white;letter-spacing:-.02em;
+    }
+    .ch-title .acc-blue{color:var(--blue-mid);}
+    .ch-title .acc-red{color:var(--red-mid);}
+    .ch-desc{font-size:.85rem;color:rgba(255,255,255,.5);margin-top:.5rem;}
+
+    /* prose text */
+    .prose{font-size:.95rem;line-height:1.85;color:#374151;margin-bottom:1.4rem;}
+    .prose strong{color:var(--dark);font-weight:600;}
+    .prose a{color:var(--blue-deep);text-decoration:none;border-bottom:1px solid var(--blue-soft);}
+
+    /* tip box */
+    .tip{
+      display:flex;gap:14px;align-items:flex-start;
+      background:var(--blue-pale);border:1.5px solid var(--blue-soft);
+      border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:1.4rem;
+    }
+    .tip-icon{font-size:1.3rem;flex-shrink:0;margin-top:.1rem;}
+    .tip-body{font-size:.85rem;line-height:1.65;color:#1e3a5f;}
+    .tip-body strong{color:var(--blue-deep);}
+
+    .warn{
+      display:flex;gap:14px;align-items:flex-start;
+      background:var(--amber-pale);border:1.5px solid #fcd34d;
+      border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:1.4rem;
+    }
+    .warn-body{font-size:.85rem;line-height:1.65;color:#78350f;}
+    .warn-body strong{color:#92400e;}
+
+    .success{
+      display:flex;gap:14px;align-items:flex-start;
+      background:var(--green-pale);border:1.5px solid #86efac;
+      border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:1.4rem;
+    }
+    .success-body{font-size:.85rem;line-height:1.65;color:#14532d;}
+    .success-body strong{color:#15803d;}
+
+    /* code block */
+    .code-block{border-radius:14px;overflow:hidden;border:1.5px solid var(--gray-light);margin-bottom:1.4rem;}
+    .code-topbar{
+      background:var(--dark);padding:8px 14px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .code-dots{display:flex;gap:6px;}
+    .cd{width:10px;height:10px;border-radius:50%;}
+    .cd-r{background:#ff5f56;}.cd-y{background:#ffbd2e;}.cd-g{background:#27c93f;}
+    .code-file{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:rgba(255,255,255,.35);text-transform:uppercase;}
+    .code-body{background:#0d1117;padding:1.1rem 1.3rem;overflow-x:auto;}
+    .code-body pre{margin:0;font-family:'Space Mono',monospace;font-size:.72rem;line-height:1.75;color:#c9d1d9;white-space:pre;}
+    /* syntax */
+    .kw{color:#ff7b72;}.fn{color:#d2a8ff;}.st{color:#a5d6ff;}.cm{color:#8b949e;}
+    .nm{color:#79c0ff;}.tx{color:#c9d1d9;}.pr{color:#ffa657;}.tg{color:#7ee787;}
+    .at{color:#ffa657;}.va{color:#a5d6ff;}.cl{color:#d2a8ff;}.pu{color:#ff7b72;}
+
+    /* result preview */
+    .preview-label{
+      font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--gray);
+      display:flex;align-items:center;gap:8px;margin-bottom:.5rem;
+    }
+    .preview-label::before{content:'▶ ';color:var(--green);}
+    .preview-box{
+      background:white;border:1.5px solid var(--gray-light);
+      border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.8rem;
+      font-size:.9rem;line-height:1.7;
+    }
+
+    /* tag reference table */
+    .tag-table{width:100%;border-collapse:collapse;margin-bottom:1.8rem;font-size:.84rem;}
+    .tag-table th{
+      background:var(--dark);color:white;
+      font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+      text-transform:uppercase;padding:.7rem 1rem;text-align:left;
+    }
+    .tag-table th:first-child{border-radius:10px 0 0 0;}
+    .tag-table th:last-child{border-radius:0 10px 0 0;}
+    .tag-table td{padding:.7rem 1rem;border-bottom:1px solid var(--gray-light);vertical-align:top;}
+    .tag-table tr:last-child td{border-bottom:none;}
+    .tag-table tr:hover td{background:var(--blue-pale);}
+    .tag-name{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--blue-deep);font-weight:700;}
+    .tag-desc{color:var(--gray);}
+    .tag-example{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--red-deep);background:var(--red-pale);padding:2px 7px;border-radius:4px;}
+
+    /* info cards 2-col */
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.8rem;}
+    .info-card{
+      background:white;border:1.5px solid var(--gray-light);
+      border-radius:14px;padding:1.2rem 1.4rem;
+      transition:border-color .3s,transform .3s;
+    }
+    .info-card:hover{border-color:var(--blue-mid);transform:translateY(-3px);}
+    .info-card:nth-child(even):hover{border-color:var(--red-mid);}
+    .ic-icon{font-size:1.5rem;margin-bottom:.7rem;}
+    .ic-title{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:.4rem;}
+    .ic-body{font-size:.84rem;line-height:1.6;color:#374151;}
+    .ic-body strong{color:var(--dark);}
+
+    /* step list */
+    .steps{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.8rem;}
+    .step{
+      display:grid;grid-template-columns:40px 1fr;gap:14px;
+      background:white;border:1.5px solid var(--gray-light);
+      border-radius:14px;padding:1rem 1.2rem;
+      transition:border-color .3s;
+    }
+    .step:hover{border-color:var(--blue-mid);}
+    .step-num{
+      width:36px;height:36px;border-radius:50%;
+      background:var(--dark);color:white;
+      font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      margin-top:2px;
+    }
+    .step-body{font-size:.88rem;line-height:1.65;color:#374151;}
+    .step-body strong{color:var(--dark);display:block;margin-bottom:.3rem;font-size:.92rem;}
+
+    /* attribute pill */
+    .attr-pill{
+      display:inline-block;
+      font-family:'Space Mono',monospace;font-size:.64rem;
+      background:var(--amber-pale);color:#92400e;
+      border-radius:6px;padding:2px 8px;margin:2px;
+    }
+    .attr-pill-blue{background:var(--blue-pale);color:var(--blue-deep);}
+    .attr-pill-green{background:var(--green-pale);color:#15803d;}
+    .attr-pill-red{background:var(--red-pale);color:var(--red-deep);}
+
+    /* visual diagram */
+    .diagram{
+      background:var(--dark);border-radius:16px;padding:2rem;
+      margin-bottom:1.8rem;position:relative;overflow:hidden;
+    }
+    .diagram::before{
+      content:'';position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(127,179,232,.07) 1px,transparent 1px);
+      background-size:24px 24px;
+    }
+    .diagram-inner{position:relative;z-index:1;font-family:'Space Mono',monospace;font-size:.78rem;line-height:2;color:rgba(255,255,255,.8);}
+    .d-comment{color:#8b949e;}.d-tag{color:#7ee787;}.d-attr{color:#ffa657;}.d-val{color:#a5d6ff;}.d-text{color:#e6edf3;}
+    .d-indent{padding-left:1.5rem;}.d-indent2{padding-left:3rem;}.d-indent3{padding-left:4.5rem;}
+
+    /* checklist */
+    .checklist{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.8rem;}
+    .check-item{
+      display:flex;align-items:flex-start;gap:10px;
+      background:white;border:1.5px solid var(--gray-light);
+      border-radius:10px;padding:.7rem 1rem;font-size:.86rem;line-height:1.5;
+    }
+    .check-icon{font-size:1rem;flex-shrink:0;margin-top:.1rem;}
+
+    /* reflection */
+    .reflection{
+      background:linear-gradient(135deg,var(--blue-pale),var(--red-pale));
+      border-radius:20px;padding:2.4rem;
+      border:1.5px solid rgba(127,179,232,.3);margin-bottom:2rem;
+    }
+    .reflection-title{
+      font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--blue-deep);margin-bottom:1rem;
+    }
+    .reflection p{font-size:.94rem;line-height:1.8;color:#374151;}
+
+    /* footer */
+    footer{
+      text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--gray-light);
+      font-size:.68rem;font-family:'Space Mono',monospace;color:var(--gray);
+      letter-spacing:.08em;background:white;
+    }
+    footer span{color:var(--blue-deep);}
+
+    /* responsive */
+    @media(max-width:768px){
+      .hero{grid-template-columns:1fr;}
+      .hero-left{min-height:55vh;padding:7rem 2rem 3rem;}
+      .hero-right{padding:3rem 2rem;}
+      .info-grid{grid-template-columns:1fr;}
+      .nav-bar{padding:12px 20px;}
+      .chapter-header{padding:1.2rem 1.4rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav-bar">
+  <a href="index.html" class="btn-back">
+    <svg width="14" height="14" fill="none" viewBox="0 0 14 14">
+      <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Volver al portafolio
+  </a>
+  <span class="nav-tag"><span>T-03</span> · Cultura Digital 2°</span>
+</nav>
+
+<!-- ── HERO PORTADA ── -->
+<header class="hero">
+
+  <!-- Panel oscuro izquierdo -->
+  <div class="hero-left">
+    <div class="orb2"></div>
+    <div class="hero-code-bg" aria-hidden="true">
+&lt;!DOCTYPE html&gt;<br>
+&lt;html lang="es"&gt;<br>
+&nbsp;&nbsp;&lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="UTF-8"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Mi página&lt;/title&gt;<br>
+&nbsp;&nbsp;&lt;/head&gt;<br>
+&nbsp;&nbsp;&lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;header&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Hola Mundo&lt;/h1&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;main&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;section&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Aprendiendo HTML5&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/section&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/main&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;footer&gt;..&lt;/footer&gt;<br>
+&nbsp;&nbsp;&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+    </div>
+    <div class="hero-left-content">
+      <div class="hero-task-num">Tarea 03 · Cultura Digital</div>
+      <h1 class="hero-title">
+        Guía<br/>
+        <span class="t-blue">HTML</span><span class="t-red">5</span><br/>
+        desde Cero
+      </h1>
+      <p class="hero-tagline">De cero a conocer todas las etiquetas y características esenciales del lenguaje de la web, con ejemplos, consejos y práctica.</p>
+      <div class="hero-pills">
+        <span class="hpill hpill-blue">📄 Estructura</span>
+        <span class="hpill hpill-red">🏷️ Etiquetas</span>
+        <span class="hpill hpill-green">✦ Ejemplos</span>
+      </div>
+    </div>
+    <div class="scroll-hint">explorar <div class="scroll-arrow"></div></div>
+  </div>
+
+  <!-- Panel claro derecho – índice de capítulos -->
+  <div class="hero-right">
+    <div class="index-title">// Índice de la guía</div>
+    <nav class="chapter-list">
+      <a href="#cap1" class="chap-link">
+        <span class="chap-num">01</span>
+        <span class="chap-name">¿Qué es HTML5?</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap2" class="chap-link">
+        <span class="chap-num">02</span>
+        <span class="chap-name">Estructura básica</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap3" class="chap-link">
+        <span class="chap-num">03</span>
+        <span class="chap-name">Etiquetas de texto</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap4" class="chap-link">
+        <span class="chap-num">04</span>
+        <span class="chap-name">Listas y enlaces</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap5" class="chap-link">
+        <span class="chap-num">05</span>
+        <span class="chap-name">Imágenes y multimedia</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap6" class="chap-link">
+        <span class="chap-num">06</span>
+        <span class="chap-name">Tablas</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap7" class="chap-link">
+        <span class="chap-num">07</span>
+        <span class="chap-name">Formularios</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap8" class="chap-link">
+        <span class="chap-num">08</span>
+        <span class="chap-name">Etiquetas semánticas</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap9" class="chap-link">
+        <span class="chap-num">09</span>
+        <span class="chap-name">Atributos globales</span>
+        <span class="chap-arrow">→</span>
+      </a>
+      <a href="#cap10" class="chap-link">
+        <span class="chap-num">10</span>
+        <span class="chap-name">Buenas prácticas</span>
+        <span class="chap-arrow">→</span>
+      </a>
+    </nav>
+  </div>
+
+</header>
+
+<!-- ══════════════════════════════════════════════
+     CONTENIDO
+══════════════════════════════════════════════ -->
+<main class="content">
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 1 — ¿QUÉ ES HTML5?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap1" class="chapter">
+  <div class="s-label"><span class="sl-blue">// Capítulo 01</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">01 · Introducción</div>
+      <h2 class="ch-title">¿Qué es <span class="acc-blue">HTML</span><span class="acc-red">5</span>?</h2>
+      <p class="ch-desc">El punto de partida de toda página web en el mundo.</p>
+    </div>
+  </div>
+
+  <p class="prose"><strong>HTML</strong> significa <strong>HyperText Markup Language</strong> (Lenguaje de Marcado de Hipertexto). No es un lenguaje de programación — es un lenguaje de <strong>estructura</strong>: le dice al navegador cómo organizar y mostrar el contenido de una página web.</p>
+  <p class="prose"><strong>HTML5</strong> es la versión más reciente y actual del estándar, publicada en 2014 por el W3C. Trajo consigo etiquetas semánticas, soporte nativo para audio y video, formularios mejorados y mucho más.</p>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="ic-icon">🌐</div>
+      <div class="ic-title">¿Para qué sirve?</div>
+      <div class="ic-body">Define la <strong>estructura y el contenido</strong> de una página: títulos, párrafos, imágenes, enlaces, tablas y formularios.</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">🧱</div>
+      <div class="ic-title">¿Cómo funciona?</div>
+      <div class="ic-body">Usamos <strong>etiquetas</strong> (tags) que el navegador interpreta y convierte en la página visual que el usuario ve.</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">🤝</div>
+      <div class="ic-title">HTML + CSS + JS</div>
+      <div class="ic-body">HTML pone el <strong>esqueleto</strong>, CSS le da el <strong>estilo</strong> y JavaScript añade la <strong>interactividad</strong>.</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">⚡</div>
+      <div class="ic-title">¿Qué necesito?</div>
+      <div class="ic-body">Solo un <strong>editor de texto</strong> (VS Code es el mejor) y un <strong>navegador web</strong>. ¡Nada más!</div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div class="tip-body"><strong>Consejo:</strong> Descarga <strong>Visual Studio Code</strong> (gratis en code.visualstudio.com). Instala la extensión <em>Live Server</em> para ver tus cambios en tiempo real sin recargar manualmente.</div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 2 — ESTRUCTURA BÁSICA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap2" class="chapter">
+  <div class="s-label"><span class="sl-red">// Capítulo 02</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">02 · Fundamentos</div>
+      <h2 class="ch-title">Estructura <span class="acc-blue">básica</span></h2>
+      <p class="ch-desc">El esqueleto que toda página HTML debe tener, siempre.</p>
+    </div>
+  </div>
+
+  <p class="prose">Cada archivo HTML debe tener esta estructura mínima. Piensa en ella como el <strong>hueso de toda página web</strong>. Cópiala y pégala cada vez que empieces un nuevo archivo.</p>
+
+  <div class="diagram">
+    <div class="diagram-inner">
+      <div><span class="d-comment">&lt;!-- Declara que es HTML5 --&gt;</span></div>
+      <div><span class="d-tag">&lt;!</span><span class="d-attr">DOCTYPE</span> <span class="d-val">html</span><span class="d-tag">&gt;</span></div>
+      <br>
+      <div><span class="d-tag">&lt;html</span> <span class="d-attr">lang</span>=<span class="d-val">"es"</span><span class="d-tag">&gt;</span> <span class="d-comment">&lt;!-- Raíz del documento --&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;head&gt;</span> <span class="d-comment">&lt;!-- Información invisible --&gt;</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;meta</span> <span class="d-attr">charset</span>=<span class="d-val">"UTF-8"</span><span class="d-tag">/&gt;</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;meta</span> <span class="d-attr">name</span>=<span class="d-val">"viewport"</span> <span class="d-attr">content</span>=<span class="d-val">"width=device-width"</span><span class="d-tag">/&gt;</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;title&gt;</span><span class="d-text">Mi primera página</span><span class="d-tag">&lt;/title&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;/head&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;body&gt;</span> <span class="d-comment">&lt;!-- Contenido visible --&gt;</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;h1&gt;</span><span class="d-text">¡Hola, mundo!</span><span class="d-tag">&lt;/h1&gt;</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;p&gt;</span><span class="d-text">Mi primera página web.</span><span class="d-tag">&lt;/p&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;/body&gt;</span></div>
+      <div><span class="d-tag">&lt;/html&gt;</span></div>
+    </div>
+  </div>
+
+  <p class="prose">Analicemos cada parte:</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>&lt;!DOCTYPE html&gt;</strong> No es una etiqueta HTML como las demás. Le avisa al navegador que el documento usa HTML5. Siempre va en la primera línea, sin excepción.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>&lt;html lang="es"&gt;</strong> Es la etiqueta raíz que contiene todo. El atributo <code>lang="es"</code> indica que el idioma es español, lo que ayuda a lectores de pantalla y al SEO.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>&lt;head&gt;</strong> Contiene información sobre la página que el usuario NO ve directamente: el título de la pestaña, estilos CSS, fuentes, etc.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><strong>&lt;meta charset="UTF-8"/&gt;</strong> Permite mostrar caracteres especiales: acentos (á, é), ñ, emojis, etc. Siempre inclúyela.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body"><strong>&lt;body&gt;</strong> Todo lo que el usuario ve en la página va aquí: textos, imágenes, botones, videos, tablas…</div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div class="tip-body"><strong>Truco rápido en VS Code:</strong> Crea un archivo <code>.html</code>, escribe <strong>!</strong> y presiona <strong>Tab</strong>. VS Code genera automáticamente toda la estructura básica en un segundo.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">index.html</span>
+    </div>
+    <div class="code-body"><pre><span class="pu">&lt;!</span><span class="kw">DOCTYPE</span> <span class="nm">html</span><span class="pu">&gt;</span>
+<span class="tg">&lt;html</span> <span class="at">lang</span>=<span class="st">"es"</span><span class="tg">&gt;</span>
+<span class="tg">&lt;head&gt;</span>
+  <span class="tg">&lt;meta</span> <span class="at">charset</span>=<span class="st">"UTF-8"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="st">"viewport"</span> <span class="at">content</span>=<span class="st">"width=device-width, initial-scale=1.0"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;title&gt;</span><span class="tx">Mi primera página</span><span class="tg">&lt;/title&gt;</span>
+<span class="tg">&lt;/head&gt;</span>
+<span class="tg">&lt;body&gt;</span>
+  <span class="tg">&lt;h1&gt;</span><span class="tx">¡Hola, mundo!</span><span class="tg">&lt;/h1&gt;</span>
+  <span class="tg">&lt;p&gt;</span><span class="tx">Esta es mi primera página web.</span><span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;/body&gt;</span>
+<span class="tg">&lt;/html&gt;</span></pre></div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 3 — ETIQUETAS DE TEXTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap3" class="chapter">
+  <div class="s-label"><span class="sl-green">// Capítulo 03</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">03 · Contenido</div>
+      <h2 class="ch-title">Etiquetas de <span class="acc-blue">texto</span></h2>
+      <p class="ch-desc">Los elementos más usados para mostrar contenido escrito.</p>
+    </div>
+  </div>
+
+  <p class="prose">Las etiquetas de texto son las más utilizadas en HTML. Con ellas organizamos títulos, párrafos y damos énfasis a palabras clave.</p>
+
+  <table class="tag-table">
+    <thead>
+      <tr><th>Etiqueta</th><th>Para qué sirve</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="tag-name">&lt;h1&gt;…&lt;h6&gt;</span></td><td class="tag-desc">Títulos de mayor (&lt;h1&gt;) a menor (&lt;h6&gt;) importancia. Solo usa <strong>un h1</strong> por página.</td><td><span class="tag-example">&lt;h1&gt;Título&lt;/h1&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;p&gt;</span></td><td class="tag-desc">Párrafos de texto. Agrega espacio arriba y abajo automáticamente.</td><td><span class="tag-example">&lt;p&gt;Texto&lt;/p&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;strong&gt;</span></td><td class="tag-desc">Texto en <strong>negrita</strong> con importancia semántica.</td><td><span class="tag-example">&lt;strong&gt;importante&lt;/strong&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;em&gt;</span></td><td class="tag-desc">Texto en <em>cursiva</em> con énfasis semántico.</td><td><span class="tag-example">&lt;em&gt;énfasis&lt;/em&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;br&gt;</span></td><td class="tag-desc">Salto de línea. No tiene etiqueta de cierre.</td><td><span class="tag-example">&lt;br&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;hr&gt;</span></td><td class="tag-desc">Línea horizontal divisora. No tiene etiqueta de cierre.</td><td><span class="tag-example">&lt;hr&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;span&gt;</span></td><td class="tag-desc">Contenedor en línea para aplicar estilos a una parte del texto.</td><td><span class="tag-example">&lt;span&gt;parte&lt;/span&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;mark&gt;</span></td><td class="tag-desc">Resalta texto como si usaras un marcador amarillo.</td><td><span class="tag-example">&lt;mark&gt;destacado&lt;/mark&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;small&gt;</span></td><td class="tag-desc">Texto de tamaño pequeño, para notas al pie o aclaraciones.</td><td><span class="tag-example">&lt;small&gt;nota&lt;/small&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;sub&gt; / &lt;sup&gt;</span></td><td class="tag-desc">Subíndice (H₂O) y superíndice (x²) respectivamente.</td><td><span class="tag-example">&lt;sup&gt;2&lt;/sup&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;blockquote&gt;</span></td><td class="tag-desc">Cita larga en bloque, con sangría.</td><td><span class="tag-example">&lt;blockquote&gt;cita&lt;/blockquote&gt;</span></td></tr>
+      <tr><td><span class="tag-name">&lt;code&gt;</span></td><td class="tag-desc">Texto con fuente monoespaciada para código inline.</td><td><span class="tag-example">&lt;code&gt;let x=1&lt;/code&gt;</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">textos.html</span>
+    </div>
+    <div class="code-body"><pre><span class="tg">&lt;h1&gt;</span><span class="tx">Título principal</span><span class="tg">&lt;/h1&gt;</span>
+<span class="tg">&lt;h2&gt;</span><span class="tx">Subtítulo</span><span class="tg">&lt;/h2&gt;</span>
+<span class="tg">&lt;h3&gt;</span><span class="tx">Sección</span><span class="tg">&lt;/h3&gt;</span>
+
+<span class="tg">&lt;p&gt;</span><span class="tx">Este es un párrafo normal.</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="tg">&lt;p&gt;</span>
+  <span class="tx">Esto es </span><span class="tg">&lt;strong&gt;</span><span class="tx">muy importante</span><span class="tg">&lt;/strong&gt;</span>
+  <span class="tx"> y esto tiene </span><span class="tg">&lt;em&gt;</span><span class="tx">énfasis</span><span class="tg">&lt;/em&gt;</span><span class="tx">.</span>
+<span class="tg">&lt;/p&gt;</span>
+
+<span class="tg">&lt;p&gt;</span><span class="tx">Texto </span><span class="tg">&lt;mark&gt;</span><span class="tx">resaltado</span><span class="tg">&lt;/mark&gt;</span><span class="tx"> aquí.</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="tg">&lt;p&gt;</span><span class="tx">Agua = H</span><span class="tg">&lt;sub&gt;</span><span class="tx">2</span><span class="tg">&lt;/sub&gt;</span><span class="tx">O</span><span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;p&gt;</span><span class="tx">x</span><span class="tg">&lt;sup&gt;</span><span class="tx">2</span><span class="tg">&lt;/sup&gt;</span><span class="tx"> + y</span><span class="tg">&lt;sup&gt;</span><span class="tx">2</span><span class="tg">&lt;/sup&gt;</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="tg">&lt;hr&gt;</span>
+
+<span class="tg">&lt;blockquote&gt;</span>
+  <span class="tx">"El conocimiento es poder" — Francis Bacon</span>
+<span class="tg">&lt;/blockquote&gt;</span></pre></div>
+  </div>
+
+  <div class="preview-label">Resultado en el navegador</div>
+  <div class="preview-box">
+    <h1 style="font-size:1.6rem;margin-bottom:.3rem;">Título principal</h1>
+    <h2 style="font-size:1.2rem;margin-bottom:.3rem;color:#374151;">Subtítulo</h2>
+    <p>Este es un párrafo normal.</p>
+    <p>Esto es <strong>muy importante</strong> y esto tiene <em>énfasis</em>.</p>
+    <p>Texto <mark>resaltado</mark> aquí.</p>
+    <p>Agua = H<sub>2</sub>O</p>
+    <p>x<sup>2</sup> + y<sup>2</sup></p>
+    <hr style="margin:.6rem 0;">
+    <blockquote style="border-left:3px solid #ccc;padding-left:.8rem;color:#555;">"El conocimiento es poder" — Francis Bacon</blockquote>
+  </div>
+
+  <div class="warn">
+    <div class="tip-icon">⚠️</div>
+    <div class="warn-body"><strong>Ojo:</strong> Nunca uses &lt;h1&gt; solo para hacer el texto grande. Las etiquetas h1–h6 tienen un significado semántico: representan jerarquía de información. Para tamaños usa CSS.</div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 4 — LISTAS Y ENLACES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap4" class="chapter">
+  <div class="s-label"><span class="sl-amber">// Capítulo 04</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">04 · Navegación</div>
+      <h2 class="ch-title"><span class="acc-blue">Listas</span> y <span class="acc-red">enlaces</span></h2>
+      <p class="ch-desc">Organiza información y conecta páginas entre sí.</p>
+    </div>
+  </div>
+
+  <p class="prose">Las listas agrupan elementos relacionados. Los enlaces <strong>&lt;a&gt;</strong> son el núcleo del concepto "hiper" en hipertexto: conectan páginas, secciones, archivos y recursos externos.</p>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">listas.html</span>
+    </div>
+    <div class="code-body"><pre><span class="cm">&lt;!-- Lista sin orden (bullets) --&gt;</span>
+<span class="tg">&lt;ul&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="tx">HTML</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="tx">CSS</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="tx">JavaScript</span><span class="tg">&lt;/li&gt;</span>
+<span class="tg">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- Lista ordenada (números) --&gt;</span>
+<span class="tg">&lt;ol&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="tx">Aprende HTML</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="tx">Aprende CSS</span><span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span><span class="tx">Aprende JavaScript</span><span class="tg">&lt;/li&gt;</span>
+<span class="tg">&lt;/ol&gt;</span>
+
+<span class="cm">&lt;!-- Lista de definición --&gt;</span>
+<span class="tg">&lt;dl&gt;</span>
+  <span class="tg">&lt;dt&gt;</span><span class="tx">HTML</span><span class="tg">&lt;/dt&gt;</span>
+  <span class="tg">&lt;dd&gt;</span><span class="tx">Lenguaje de marcado</span><span class="tg">&lt;/dd&gt;</span>
+<span class="tg">&lt;/dl&gt;</span>
+
+<span class="cm">&lt;!-- ENLACES --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"https://google.com"</span><span class="tg">&gt;</span><span class="tx">Ir a Google</span><span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Abrir en nueva pestaña --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"https://google.com"</span> <span class="at">target</span>=<span class="st">"_blank"</span><span class="tg">&gt;</span>
+  <span class="tx">Google (nueva pestaña)</span>
+<span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Enlace a otra página local --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"contacto.html"</span><span class="tg">&gt;</span><span class="tx">Contacto</span><span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Enlace a sección de la misma página --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"#cap5"</span><span class="tg">&gt;</span><span class="tx">Ir al capítulo 5</span><span class="tg">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Enlace de email --&gt;</span>
+<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="st">"mailto:hola@correo.com"</span><span class="tg">&gt;</span><span class="tx">Escríbeme</span><span class="tg">&lt;/a&gt;</span></pre></div>
+  </div>
+
+  <div class="preview-label">Resultado en el navegador</div>
+  <div class="preview-box">
+    <strong style="font-size:.8rem;color:#6b7280;font-weight:600;">Lista sin orden:</strong>
+    <ul style="margin:.4rem 0 .8rem 1.2rem;"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+    <strong style="font-size:.8rem;color:#6b7280;font-weight:600;">Lista ordenada:</strong>
+    <ol style="margin:.4rem 0 .8rem 1.4rem;"><li>Aprende HTML</li><li>Aprende CSS</li><li>Aprende JavaScript</li></ol>
+    <strong style="font-size:.8rem;color:#6b7280;font-weight:600;">Enlace:</strong>
+    <a href="#" style="color:#4a90c4;display:block;margin-top:.4rem;">Ir a Google</a>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div class="tip-body"><strong>Atributos importantes del enlace &lt;a&gt;:</strong><br><br>
+      <span class="attr-pill"><code>href</code></span> URL de destino<br>
+      <span class="attr-pill"><code>target="_blank"</code></span> Abre en nueva pestaña<br>
+      <span class="attr-pill"><code>rel="noopener"</code></span> Seguridad al usar _blank<br>
+      <span class="attr-pill"><code>title="..."</code></span> Tooltip al pasar el mouse
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 5 — IMÁGENES Y MULTIMEDIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap5" class="chapter">
+  <div class="s-label"><span class="sl-blue">// Capítulo 05</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">05 · Multimedia</div>
+      <h2 class="ch-title">Imágenes y <span class="acc-red">multimedia</span></h2>
+      <p class="ch-desc">Fotos, audio y video directamente en el navegador.</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">multimedia.html</span>
+    </div>
+    <div class="code-body"><pre><span class="cm">&lt;!-- Imagen básica --&gt;</span>
+<span class="tg">&lt;img</span>
+  <span class="at">src</span>=<span class="st">"foto.jpg"</span>
+  <span class="at">alt</span>=<span class="st">"Descripción de la imagen"</span>
+  <span class="at">width</span>=<span class="st">"400"</span>
+  <span class="at">height</span>=<span class="st">"300"</span>
+<span class="tg">/&gt;</span>
+
+<span class="cm">&lt;!-- Imagen responsiva (recomendado) --&gt;</span>
+<span class="tg">&lt;img</span>
+  <span class="at">src</span>=<span class="st">"foto.jpg"</span>
+  <span class="at">alt</span>=<span class="st">"Mi foto"</span>
+  <span class="at">style</span>=<span class="st">"max-width:100%; height:auto;"</span>
+<span class="tg">/&gt;</span>
+
+<span class="cm">&lt;!-- Imagen con pie de foto --&gt;</span>
+<span class="tg">&lt;figure&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="st">"foto.jpg"</span> <span class="at">alt</span>=<span class="st">"Paisaje"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;figcaption&gt;</span><span class="tx">Un hermoso paisaje.</span><span class="tg">&lt;/figcaption&gt;</span>
+<span class="tg">&lt;/figure&gt;</span>
+
+<span class="cm">&lt;!-- VIDEO HTML5 --&gt;</span>
+<span class="tg">&lt;video</span> <span class="at">controls</span> <span class="at">width</span>=<span class="st">"640"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">src</span>=<span class="st">"video.mp4"</span> <span class="at">type</span>=<span class="st">"video/mp4"</span><span class="tg">/&gt;</span>
+  <span class="tx">Tu navegador no soporta video.</span>
+<span class="tg">&lt;/video&gt;</span>
+
+<span class="cm">&lt;!-- AUDIO HTML5 --&gt;</span>
+<span class="tg">&lt;audio</span> <span class="at">controls</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;source</span> <span class="at">src</span>=<span class="st">"audio.mp3"</span> <span class="at">type</span>=<span class="st">"audio/mpeg"</span><span class="tg">/&gt;</span>
+<span class="tg">&lt;/audio&gt;</span>
+
+<span class="cm">&lt;!-- VIDEO de YouTube --&gt;</span>
+<span class="tg">&lt;iframe</span>
+  <span class="at">width</span>=<span class="st">"560"</span> <span class="at">height</span>=<span class="st">"315"</span>
+  <span class="at">src</span>=<span class="st">"https://www.youtube.com/embed/ID"</span>
+  <span class="at">allowfullscreen</span>
+<span class="tg">&gt;&lt;/iframe&gt;</span></pre></div>
+  </div>
+
+  <div class="warn">
+    <div class="tip-icon">⚠️</div>
+    <div class="warn-body"><strong>El atributo <code>alt</code> es obligatorio en &lt;img&gt;.</strong> Describe la imagen para personas con discapacidad visual y para cuando la imagen no carga. Si la imagen es decorativa, usa <code>alt=""</code>.</div>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div class="tip-body"><strong>Atributos de &lt;video&gt; y &lt;audio&gt; en HTML5:</strong><br><br>
+      <span class="attr-pill attr-pill-blue"><code>controls</code></span> Muestra los controles de reproducción<br>
+      <span class="attr-pill attr-pill-blue"><code>autoplay</code></span> Reproduce automáticamente<br>
+      <span class="attr-pill attr-pill-blue"><code>loop</code></span> Repite el video/audio<br>
+      <span class="attr-pill attr-pill-blue"><code>muted</code></span> Silenciado por defecto<br>
+      <span class="attr-pill attr-pill-blue"><code>poster="img.jpg"</code></span> Imagen de previsualización del video
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 6 — TABLAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap6" class="chapter">
+  <div class="s-label"><span class="sl-red">// Capítulo 06</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">06 · Datos</div>
+      <h2 class="ch-title"><span class="acc-blue">Tablas</span></h2>
+      <p class="ch-desc">Organiza datos en filas y columnas.</p>
+    </div>
+  </div>
+
+  <p class="prose">Las tablas se usan para mostrar datos tabulares, como horarios, comparaciones o calificaciones. Nunca las uses para crear layouts de página (eso lo hace CSS).</p>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">tabla.html</span>
+    </div>
+    <div class="code-body"><pre><span class="tg">&lt;table</span> <span class="at">border</span>=<span class="st">"1"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- Cabecera --&gt;</span>
+  <span class="tg">&lt;thead&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;th&gt;</span><span class="tx">Materia</span><span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th&gt;</span><span class="tx">Calificación</span><span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th&gt;</span><span class="tx">Estado</span><span class="tg">&lt;/th&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/thead&gt;</span>
+
+  <span class="cm">&lt;!-- Cuerpo --&gt;</span>
+  <span class="tg">&lt;tbody&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">Cultura Digital</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">9.5</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">✅ Aprobado</span><span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">Matemáticas</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">8.0</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">✅ Aprobado</span><span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/tbody&gt;</span>
+
+  <span class="cm">&lt;!-- Pie de tabla --&gt;</span>
+  <span class="tg">&lt;tfoot&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">colspan</span>=<span class="st">"2"</span><span class="tg">&gt;</span><span class="tx">Promedio general</span><span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span><span class="tx">8.75</span><span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/tfoot&gt;</span>
+
+<span class="tg">&lt;/table&gt;</span></pre></div>
+  </div>
+
+  <div class="preview-label">Resultado en el navegador</div>
+  <div class="preview-box">
+    <table style="border-collapse:collapse;width:100%;font-size:.88rem;">
+      <thead><tr style="background:#1a1a2e;color:white;"><th style="padding:.5rem .9rem;text-align:left;">Materia</th><th style="padding:.5rem .9rem;text-align:left;">Calificación</th><th style="padding:.5rem .9rem;text-align:left;">Estado</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #e8edf4;"><td style="padding:.5rem .9rem;">Cultura Digital</td><td style="padding:.5rem .9rem;">9.5</td><td style="padding:.5rem .9rem;">✅ Aprobado</td></tr>
+        <tr style="border-bottom:1px solid #e8edf4;"><td style="padding:.5rem .9rem;">Matemáticas</td><td style="padding:.5rem .9rem;">8.0</td><td style="padding:.5rem .9rem;">✅ Aprobado</td></tr>
+      </tbody>
+      <tfoot><tr style="background:#f8f6f2;"><td colspan="2" style="padding:.5rem .9rem;font-weight:600;">Promedio general</td><td style="padding:.5rem .9rem;font-weight:600;">8.75</td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div class="tip-body">
+      <strong>Atributos útiles:</strong><br><br>
+      <span class="attr-pill"><code>colspan="2"</code></span> La celda ocupa 2 columnas<br>
+      <span class="attr-pill"><code>rowspan="3"</code></span> La celda ocupa 3 filas<br>
+      <span class="attr-pill"><code>scope="col"</code></span> Accesibilidad en &lt;th&gt;
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 7 — FORMULARIOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap7" class="chapter">
+  <div class="s-label"><span class="sl-green">// Capítulo 07</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">07 · Interacción</div>
+      <h2 class="ch-title"><span class="acc-blue">Formu</span><span class="acc-red">larios</span></h2>
+      <p class="ch-desc">Recibe información del usuario: texto, opciones, archivos.</p>
+    </div>
+  </div>
+
+  <p class="prose">Los formularios son la forma principal en que los usuarios interactúan con una web: buscar, iniciar sesión, registrarse, enviar mensajes. HTML5 introdujo <strong>nuevos tipos de input</strong> muy útiles.</p>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">formulario.html</span>
+    </div>
+    <div class="code-body"><pre><span class="tg">&lt;form</span> <span class="at">action</span>=<span class="st">"procesar.php"</span> <span class="at">method</span>=<span class="st">"POST"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- Texto --&gt;</span>
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="st">"nombre"</span><span class="tg">&gt;</span><span class="tx">Nombre:</span><span class="tg">&lt;/label&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"text"</span> <span class="at">id</span>=<span class="st">"nombre"</span> <span class="at">name</span>=<span class="st">"nombre"</span>
+         <span class="at">placeholder</span>=<span class="st">"Tu nombre"</span> <span class="at">required</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Email --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"email"</span> <span class="at">placeholder</span>=<span class="st">"correo@email.com"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Contraseña --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"password"</span> <span class="at">minlength</span>=<span class="st">"8"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Número --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"number"</span> <span class="at">min</span>=<span class="st">"1"</span> <span class="at">max</span>=<span class="st">"100"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Fecha (nuevo en HTML5) --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"date"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Color picker (nuevo en HTML5) --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"color"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Rango / slider --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"range"</span> <span class="at">min</span>=<span class="st">"0"</span> <span class="at">max</span>=<span class="st">"100"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Área de texto --&gt;</span>
+  <span class="tg">&lt;textarea</span> <span class="at">rows</span>=<span class="st">"4"</span> <span class="at">cols</span>=<span class="st">"40"</span><span class="tg">&gt;&lt;/textarea&gt;</span>
+
+  <span class="cm">&lt;!-- Selección --&gt;</span>
+  <span class="tg">&lt;select</span> <span class="at">name</span>=<span class="st">"grado"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="st">"1"</span><span class="tg">&gt;</span><span class="tx">1° Semestre</span><span class="tg">&lt;/option&gt;</span>
+    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="st">"2"</span> <span class="at">selected</span><span class="tg">&gt;</span><span class="tx">2° Semestre</span><span class="tg">&lt;/option&gt;</span>
+  <span class="tg">&lt;/select&gt;</span>
+
+  <span class="cm">&lt;!-- Checkbox --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"checkbox"</span> <span class="at">id</span>=<span class="st">"acepto"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="st">"acepto"</span><span class="tg">&gt;</span><span class="tx">Acepto términos</span><span class="tg">&lt;/label&gt;</span>
+
+  <span class="cm">&lt;!-- Radio buttons --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"radio"</span> <span class="at">name</span>=<span class="st">"sexo"</span> <span class="at">value</span>=<span class="st">"M"</span><span class="tg">/&gt;</span> <span class="tx">Masculino</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"radio"</span> <span class="at">name</span>=<span class="st">"sexo"</span> <span class="at">value</span>=<span class="st">"F"</span><span class="tg">/&gt;</span> <span class="tx">Femenino</span>
+
+  <span class="cm">&lt;!-- Subir archivo --&gt;</span>
+  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="st">"file"</span> <span class="at">accept</span>=<span class="st">".jpg,.png"</span><span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Botón de envío --&gt;</span>
+  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="st">"submit"</span><span class="tg">&gt;</span><span class="tx">Enviar</span><span class="tg">&lt;/button&gt;</span>
+  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="st">"reset"</span><span class="tg">&gt;</span><span class="tx">Limpiar</span><span class="tg">&lt;/button&gt;</span>
+
+<span class="tg">&lt;/form&gt;</span></pre></div>
+  </div>
+
+  <div class="success">
+    <div class="tip-icon">✅</div>
+    <div class="success-body"><strong>HTML5 valida automáticamente:</strong> Al usar <code>type="email"</code> el navegador verifica que el formato sea correcto antes de enviar. Con <code>required</code> no permite enviar si el campo está vacío. ¡Sin JavaScript!</div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 8 — SEMÁNTICA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap8" class="chapter">
+  <div class="s-label"><span class="sl-amber">// Capítulo 08</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">08 · Arquitectura</div>
+      <h2 class="ch-title">Etiquetas <span class="acc-blue">semánticas</span></h2>
+      <p class="ch-desc">HTML5 llegó con etiquetas que describen el significado del contenido.</p>
+    </div>
+  </div>
+
+  <p class="prose">Antes de HTML5 todo se hacía con <code>&lt;div&gt;</code>. Las etiquetas semánticas le dicen al navegador, buscadores y lectores de pantalla <strong>qué tipo de contenido</strong> contiene cada sección.</p>
+
+  <div class="diagram">
+    <div class="diagram-inner">
+      <div><span class="d-tag">&lt;body&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;header&gt;</span> <span class="d-comment">← Encabezado del sitio (logo, menú)</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;nav&gt;</span> <span class="d-comment">← Menú de navegación</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;main&gt;</span> <span class="d-comment">← Contenido principal (solo uno por página)</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;article&gt;</span> <span class="d-comment">← Contenido independiente (un blog post)</span></div>
+      <div class="d-indent3"><span class="d-tag">&lt;section&gt;</span> <span class="d-comment">← Sección temática</span></div>
+      <div class="d-indent3"><span class="d-tag">&lt;aside&gt;</span> <span class="d-comment">← Barra lateral / info relacionada</span></div>
+      <div class="d-indent2"><span class="d-tag">&lt;/article&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;/main&gt;</span></div>
+      <div class="d-indent"><span class="d-tag">&lt;footer&gt;</span> <span class="d-comment">← Pie de página (créditos, links)</span></div>
+      <div><span class="d-tag">&lt;/body&gt;</span></div>
+    </div>
+  </div>
+
+  <table class="tag-table">
+    <thead><tr><th>Etiqueta</th><th>Uso recomendado</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag-name">&lt;header&gt;</span></td><td class="tag-desc">Encabezado del sitio o de una sección. Logo, título y menú principal.</td></tr>
+      <tr><td><span class="tag-name">&lt;nav&gt;</span></td><td class="tag-desc">Bloque de enlaces de navegación principal.</td></tr>
+      <tr><td><span class="tag-name">&lt;main&gt;</span></td><td class="tag-desc">Contenido principal único de la página. Solo uno por documento.</td></tr>
+      <tr><td><span class="tag-name">&lt;section&gt;</span></td><td class="tag-desc">Agrupación temática de contenido, normalmente con un título.</td></tr>
+      <tr><td><span class="tag-name">&lt;article&gt;</span></td><td class="tag-desc">Contenido independiente y reutilizable: post, noticia, tarjeta.</td></tr>
+      <tr><td><span class="tag-name">&lt;aside&gt;</span></td><td class="tag-desc">Información relacionada pero secundaria. Barras laterales, tips.</td></tr>
+      <tr><td><span class="tag-name">&lt;footer&gt;</span></td><td class="tag-desc">Pie de página con créditos, redes sociales, copyright.</td></tr>
+      <tr><td><span class="tag-name">&lt;figure&gt;</span></td><td class="tag-desc">Contenedor para imagen/gráfico con su descripción &lt;figcaption&gt;.</td></tr>
+      <tr><td><span class="tag-name">&lt;time&gt;</span></td><td class="tag-desc">Representa una fecha/hora legible para máquinas.</td></tr>
+      <tr><td><span class="tag-name">&lt;details&gt;</span></td><td class="tag-desc">Contenido expandible/colapsable sin JavaScript.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="success">
+    <div class="tip-icon">✅</div>
+    <div class="success-body"><strong>¿Por qué es importante la semántica?</strong> Google usa las etiquetas semánticas para entender tu página y posicionarla mejor en buscadores (SEO). Los lectores de pantalla las usan para ayudar a personas con discapacidad visual a navegar la web.</div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 9 — ATRIBUTOS GLOBALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap9" class="chapter">
+  <div class="s-label"><span class="sl-blue">// Capítulo 09</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">09 · Atributos</div>
+      <h2 class="ch-title">Atributos <span class="acc-red">globales</span></h2>
+      <p class="ch-desc">Atributos que puedes usar en cualquier etiqueta HTML.</p>
+    </div>
+  </div>
+
+  <p class="prose">Los <strong>atributos</strong> son información extra que agregamos dentro de la etiqueta de apertura. Los atributos globales funcionan en <em>cualquier</em> etiqueta HTML.</p>
+
+  <div class="code-block">
+    <div class="code-topbar">
+      <div class="code-dots"><span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span></div>
+      <span class="code-file">atributos.html</span>
+    </div>
+    <div class="code-body"><pre><span class="cm">&lt;!-- id: identificador único en la página --&gt;</span>
+<span class="tg">&lt;section</span> <span class="at">id</span>=<span class="st">"contacto"</span><span class="tg">&gt;</span><span class="tx">…</span><span class="tg">&lt;/section&gt;</span>
+
+<span class="cm">&lt;!-- class: grupo de elementos para CSS/JS --&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">class</span>=<span class="st">"destacado azul"</span><span class="tg">&gt;</span><span class="tx">Texto importante</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- style: CSS en línea (evitar si es posible) --&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">style</span>=<span class="st">"color:red; font-size:20px;"</span><span class="tg">&gt;</span><span class="tx">Rojo</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- title: tooltip al pasar el mouse --&gt;</span>
+<span class="tg">&lt;abbr</span> <span class="at">title</span>=<span class="st">"HyperText Markup Language"</span><span class="tg">&gt;</span><span class="tx">HTML</span><span class="tg">&lt;/abbr&gt;</span>
+
+<span class="cm">&lt;!-- hidden: oculta el elemento --&gt;</span>
+<span class="tg">&lt;p</span> <span class="at">hidden</span><span class="tg">&gt;</span><span class="tx">No visible</span><span class="tg">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- tabindex: orden del foco con teclado --&gt;</span>
+<span class="tg">&lt;button</span> <span class="at">tabindex</span>=<span class="st">"1"</span><span class="tg">&gt;</span><span class="tx">Primero</span><span class="tg">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- contenteditable: texto editable --&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">contenteditable</span>=<span class="st">"true"</span><span class="tg">&gt;</span>
+  <span class="tx">¡Puedes editar este texto!</span>
+<span class="tg">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- data-*: atributos personalizados --&gt;</span>
+<span class="tg">&lt;button</span> <span class="at">data-id</span>=<span class="st">"42"</span> <span class="at">data-accion</span>=<span class="st">"borrar"</span><span class="tg">&gt;</span>
+  <span class="tx">Eliminar</span>
+<span class="tg">&lt;/button&gt;</span></pre></div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="ic-icon">🎯</div>
+      <div class="ic-title">id vs class</div>
+      <div class="ic-body"><strong>id</strong> es único (solo un elemento por página). <strong>class</strong> puede repetirse en varios elementos. Usa class para estilos e id para anclas y JS.</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-icon">🗂️</div>
+      <div class="ic-title">data-*</div>
+      <div class="ic-body">Guarda datos personalizados en el HTML para usar con JavaScript. Ej: <code>data-id="5"</code> luego accesible con <code>element.dataset.id</code>.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CAPÍTULO 10 — BUENAS PRÁCTICAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cap10" class="chapter">
+  <div class="s-label"><span class="sl-green">// Capítulo 10</span><div class="s-line"></div></div>
+
+  <div class="chapter-header">
+    <div class="chapter-header-content">
+      <div class="ch-num">10 · Profesional</div>
+      <h2 class="ch-title">Buenas <span class="acc-blue">prácticas</span></h2>
+      <p class="ch-desc">Los hábitos que separan al principiante del desarrollador profesional.</p>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <div class="check-item"><span class="check-icon">✅</span>Siempre escribe el <code>&lt;!DOCTYPE html&gt;</code> en la primera línea.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Usa minúsculas en todas tus etiquetas y atributos: <code>&lt;p&gt;</code> no <code>&lt;P&gt;</code>.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Cierra siempre tus etiquetas. Si abriste <code>&lt;div&gt;</code>, ciérralo con <code>&lt;/div&gt;</code>.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Usa sangría (indentación) de 2 espacios para que el código sea legible.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Agrega el atributo <code>alt</code> a todas tus imágenes.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Usa etiquetas semánticas en lugar de llenar todo de <code>&lt;div&gt;</code>.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Escribe comentarios (<code>&lt;!-- ... --&gt;</code>) para explicar partes complejas.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Valida tu HTML en <strong>validator.w3.org</strong> antes de publicarlo.</div>
+    <div class="check-item"><span class="check-icon">✅</span>Separa la estructura (HTML) del estilo (CSS) y la lógica (JavaScript).</div>
+    <div class="check-item"><span class="check-icon">✅</span>Incluye siempre la meta viewport para que tu página sea responsiva en móvil.</div>
+    <div class="check-item"><span class="check-icon">❌</span>No uses estilos en línea (<code>style=""</code>) en producción. Usa archivos CSS separados.</div>
+    <div class="check-item"><span class="check-icon">❌</span>No uses <code>&lt;b&gt;</code> o <code>&lt;i&gt;</code> solo para estilo visual. Usa <code>&lt;strong&gt;</code> y <code>&lt;em&gt;</code> con significado semántico.</div>
+    <div class="check-item"><span class="check-icon">❌</span>No uses tablas para diseño de layout. Las tablas son solo para datos tabulares.</div>
+  </div>
+
+  <div class="tip">
+    <div class="tip-icon">🚀</div>
+    <div class="tip-body">
+      <strong>Recursos para seguir aprendiendo:</strong><br><br>
+      🌐 <strong>MDN Web Docs</strong> — developer.mozilla.org (la biblia del desarrollo web)<br>
+      📘 <strong>W3Schools</strong> — w3schools.com (ejercicios interactivos)<br>
+      🎯 <strong>freeCodeCamp</strong> — freecodecamp.org (cursos gratis con certificado)<br>
+      🔍 <strong>W3C Validator</strong> — validator.w3.org (valida tu código HTML)
+    </div>
+  </div>
+</section>
+
+<!-- REFLEXIÓN -->
+<div class="s-label"><span class="sl-blue">// Reflexión personal</span><div class="s-line"></div></div>
+<div class="reflection">
+  <div class="reflection-title">✦ Lo que aprendí con esta tarea</div>
+  <p>
+    Aprender HTML5 me permitió entender que la web no es magia: cada página que visito está construida con etiquetas que organizan el contenido de forma lógica. Lo más sorprendente fue descubrir que con solo conocer unas pocas etiquetas ya puedes crear páginas completas. Las etiquetas semánticas me parecieron muy importantes porque muestran que escribir buen código no se trata solo de que funcione, sino de que tenga significado y sea accesible para todos. El siguiente paso es aprender CSS para darle estilo a todo lo que aprendí aquí.
+  </p>
+</div>
+
+</main>
+
+<footer>
+  <span>T-03 · Guía HTML5 desde Cero</span> &nbsp;·&nbsp; Portafolio de Cultura Digital 2° &nbsp;·&nbsp; 2025
+</footer>
+
+</body>
+</html>
